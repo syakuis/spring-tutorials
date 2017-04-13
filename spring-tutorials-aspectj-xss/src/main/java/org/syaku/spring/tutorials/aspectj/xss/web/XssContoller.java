@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.syaku.spring.tutorials.aspectj.xss.domain.Foo;
 import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
@@ -20,7 +23,7 @@ public class XssContoller {
 	private static final Logger logger = LoggerFactory.getLogger(XssContoller.class);
 
 	@GetMapping(value = "")
-	public String demo(Model model, @XssFilter Foo foo) {
+	public String demo(@XssFilter Foo foo, HttpServletRequest httpServletRequest, HttpServletResponse response, Model model) {
 		logger.debug("controller foo ====> {}", foo.toString());
 		logger.debug(model.toString());
 		return "/aspectj/xss/demo.view";
