@@ -1,7 +1,8 @@
-package org.syaku.tutorials.boot.servlet;
+package org.syaku.spring.tutorials.boot.servlet;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,10 @@ import java.nio.charset.StandardCharsets;
  * @since 2017. 4. 13.
  */
 @Configuration
+@EnableAspectJAutoProxy
 @EnableWebMvc
 @ComponentScan(
-		basePackages = "",
+		basePackages = "org.syaku.spring.tutorials",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(
 				type = FilterType.ANNOTATION,

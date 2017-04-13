@@ -1,4 +1,4 @@
-package org.syaku.tutorials.boot.config;
+package org.syaku.spring.tutorials.boot.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

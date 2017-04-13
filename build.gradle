@@ -9,7 +9,6 @@ buildscript {
 
 configure(allprojects) {
     group 'org.syaku.tutorials'
-    version '1.0.0'
 
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -24,6 +23,7 @@ configure(allprojects) {
     }
 
     ext {
+        tutorialsVersion = '1.1.0'
         slf4jVersion = '1.7.25'
         junitVersion = '4.12'
 
@@ -43,10 +43,15 @@ configure(allprojects) {
             exclude group: 'org.slf4j', module: 'slf4j-api'
         }
 
-        testCompile "junit:junit:$junitVersion"
+        testCompile "junit:junit:$junitVersion",
+                    "org.jmock:jmock-junit4:2.8.2"
+
+        compile 'org.aspectj:aspectjweaver:1.8.9'
 
         compile "org.springframework:spring-webmvc:$springVersion",
-                "org.springframework:spring-context-support:$springVersion"
+                "org.springframework:spring-aop:$springVersion",
+                "org.springframework:spring-context-support:$springVersion",
+                "org.springframework:spring-test:$springVersion"
 
         compile 'org.freemarker:freemarker:2.3.23'
 
@@ -66,10 +71,32 @@ configure(allprojects) {
 }
 
 
+project(':spring-tutorials-core') {
+    jar {
+        baseName = 'spring-tutorials-core'
+        version = "${tutorialsVersion}"
+    }
+}
+
+project(':spring-tutorials-aspectj-xss') {
+    dependencies {
+        compile project(':spring-tutorials-core')
+    }
+
+    jar {
+        baseName = 'spring-tutorials-aspectj-xss'
+        version = "${tutorialsVersion}"
+    }
+}
+
 configure(rootProject) {
     apply plugin: 'war'
 
     dependencies {
+        compile project(':spring-tutorials-core'),
+                project(':spring-tutorials-aspectj-xss')
+
+
         providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
                         'javax.servlet.jsp:jsp-api:2.1',
                         'javax.el:javax.el-api:2.2.4'
