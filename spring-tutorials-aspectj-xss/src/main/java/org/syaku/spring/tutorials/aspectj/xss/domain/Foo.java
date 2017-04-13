@@ -14,4 +14,5 @@ import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
 public class Foo {
 	@XssFilter
 	private String name;
+	private String name2;
 }
