@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.syaku.spring.tutorials.aspectj.xss.domain.Foo;
+import org.syaku.spring.tutorials.aspectj.xss.sevice.XssService;
 import org.syaku.spring.tutorials.boot.Bootstrap;
 import org.syaku.spring.tutorials.boot.servlet.ServletConfiguration;
 
@@ -37,6 +38,9 @@ public class XssContollerTest {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@Autowired
+	private XssService xssService;
+
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -50,6 +54,7 @@ public class XssContollerTest {
 
 		Foo foo = new Foo();
 		foo.setName("good");
+		xssService.test();
 
 		logger.debug("test response ===> {}", result.getResponse().getContentAsString());
 	}

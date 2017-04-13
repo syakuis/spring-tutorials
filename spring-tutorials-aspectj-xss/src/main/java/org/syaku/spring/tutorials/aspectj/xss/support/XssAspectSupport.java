@@ -1,10 +1,7 @@
 package org.syaku.spring.tutorials.aspectj.xss.support;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +34,20 @@ public class XssAspectSupport {
 */
 	// @After("@annotation(org.syaku.spring.tutorials.aspectj.xss.support.XssFilter)")
 	// @Before("execution(public * *(..)) && @args(org.syaku.spring.tutorials.aspectj.xss.support.XssFilter,..)")
+	//@Pointcut("@annotation(org.springframework.stereotype.Controller)")
+	//public void controller() {
+
+	//}
 
 	// 어떤 위치의 파라메터라도 읽을 수 있게 포인트컷 설정.
-	@Before("execution(* *(.., @XssFilter (*))) || execution(* *(@XssFilter (*), ..)) || execution(* *(.., @XssFilter (*), ..))")
+	//@Before("@within(@XssFilter)")
+	//public void test() {
+///		System.out.println("good123");
+	//}
+
+
+	@Before("execution(public * *(.., @XssFilter (*))) || execution(* *(@XssFilter (*), ..)) || execution(* *(.., @XssFilter (*), ..))")
+	//@Before("@within(org.syaku.spring.tutorials.aspectj.xss.support.XssFilter)")
 	public void xssFilter(JoinPoint point) throws Exception {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		Method method = signature.getMethod();
@@ -72,67 +80,9 @@ public class XssAspectSupport {
 							}
 						}
 					}
-/*
-					for (Method method1 : clz.getMethods()) {
-						logger.debug(method1.getName());
-						if ("getName".equals(method1.getName())) {
-							Object value = method1.invoke(object);
-							logger.debug(value.toString());
-						}
-
-						if ("setName".equals(method1.getName())) {
-							method1.invoke(object, "2");
-						}
-					}*/
 				}
 			}
 			i++;
-
 		}
-/*
-		for (Object object : point.getArgs()) {
-			Class clz = object.getClass();
-
-			logger.debug(clz.getName());
-		}
-
-		for (Object object : point.getArgs()) {
-			Class clz = object.getClass();
-
-			for (Field field : clz.getDeclaredFields()) {
-				logger.debug(field.getName());
-
-				logger.debug(field.getAnnotatedType().toString());
-			}
-
-			for (Method method1 : clz.getMethods()) {
-				logger.debug(method1.getName());
-				if ("getName".equals(method1.getName())) {
-					Object value = method1.invoke(object);
-					logger.debug(value.toString());
-				}
-
-				if ("setName".equals(method1.getName())) {
-					method1.invoke(object, "2");
-				}
-			}
-		}*/
-/*
-		for (Parameter parameter : method.getParameters()) {
-
-			Class clz = parameter.getType();
-			logger.debug(clz.getCanonicalName());
-			for (Field field : clz.getFields()) {
-
-				logger.debug(field.getName());
-				logger.debug(field.get(object[0]).toString());
-			}
-			for (Method method1 : clz.getMethods()) {
-				if ("getName".equals(method1.getName())) {
-					Object value = method1.invoke(object[0]);
-					logger.debug(value.toString());
-				}
-			}
-		}*/
 	}
 }
