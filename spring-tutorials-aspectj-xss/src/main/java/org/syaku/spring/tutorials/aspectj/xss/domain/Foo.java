@@ -1,8 +1,10 @@
 package org.syaku.spring.tutorials.aspectj.xss.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
+import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
+import org.syaku.spring.tutorials.aspectj.xss.support.XssType;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -11,10 +13,14 @@ import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
  */
 @Data
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Foo {
-	@XssFilter
+	@XssClean(XssType.DOM)
 	private String filter;
-	private String noFilter;
+	@XssClean(XssType.SAX)
+	private String saxFilter;
 	private String name;
 	private int count;
+	@XssClean(XssType.ESCAPE)
+	private String escape;
 }

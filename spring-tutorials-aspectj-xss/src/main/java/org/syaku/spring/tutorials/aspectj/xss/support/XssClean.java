@@ -10,11 +10,8 @@ import java.lang.annotation.Target;
  * @site http://syaku.tistory.com
  * @since 2017. 4. 13.
  */
-@Target({
-		ElementType.PARAMETER,
-		ElementType.FIELD,
-		ElementType.METHOD
-})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface XssFilter {
+public @interface XssClean {
+	XssType value() default XssType.SAX;
 }
