@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.syaku.spring.tutorials.aspectj.xss.domain.Foo;
 import org.syaku.spring.tutorials.aspectj.xss.sevice.XssService;
 import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
@@ -28,12 +30,10 @@ public class XssContoller {
 	private XssService xssService;
 
 	@GetMapping(value = "")
-	public String demo(@XssFilter Foo foo, HttpServletRequest httpServletRequest, HttpServletResponse response, Model model) {
-		logger.debug("controller foo ====> {}", foo.toString());
-		logger.debug(model.toString());
-		xssService.test();
-
-		model.addAttribute("name", foo.getName());
-		return "/aspectj/xss/demo.view";
+	@ResponseBody
+	public Foo demo(@XssFilter Foo foo, Model model) {
+		return foo;
+		//model.addAttribute("name", foo.getName());
+		//return "/aspectj/xss/demo.view";
 	}
 }

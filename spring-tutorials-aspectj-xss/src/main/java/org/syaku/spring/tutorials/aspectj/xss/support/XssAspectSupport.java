@@ -54,8 +54,8 @@ public class XssAspectSupport {
 		Method method = signature.getMethod();
 		Annotation[][] methodAnnotations = method.getParameterAnnotations();
 		Object[] objects = point.getArgs();
-		logger.debug(" ====================> aspect call");
-		logger.debug(" args = {} , annotations = {}", objects.length, methodAnnotations.length);
+		//logger.debug(" ====================> aspect call");
+		//logger.debug(" args = {} , annotations = {}", objects.length, methodAnnotations.length);
 		//logger.debug(object[0].toString());
 
 		if (objects.length != methodAnnotations.length) {
@@ -66,9 +66,11 @@ public class XssAspectSupport {
 		for (Annotation[] annotations : methodAnnotations) {
 			for (Annotation annotation : annotations) {
 				if (annotation instanceof XssFilter) {
-					logger.debug("finding XssFilter");
+					//logger.debug("finding XssFilter");
 					Object object = objects[i];
 					Class clz = object.getClass();
+
+					//logger.debug("{}", object.toString());
 
 					// private 필드를 읽기 위해 getDeclaredFields 메서드를 사용한다.
 					for (Field field : clz.getDeclaredFields()) {
@@ -83,7 +85,7 @@ public class XssAspectSupport {
 									String escape = XssPreventer.escape(value);
 									field.set(object, escape);
 
-									logger.debug("{} : {} --> {}", name, value, escape);
+									//logger.debug("{} : {} --> {}", name, value, escape);
 								}
 							}
 						}

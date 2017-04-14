@@ -13,6 +13,8 @@ import org.syaku.spring.tutorials.aspectj.xss.support.XssFilter;
 @ToString
 public class Foo {
 	@XssFilter
+	private String filter;
+	private String noFilter;
 	private String name;
-	private String name2;
+	private int count;
 }

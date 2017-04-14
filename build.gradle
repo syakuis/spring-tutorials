@@ -83,6 +83,9 @@ project(':spring-tutorials-aspectj-xss') {
         compile project(':spring-tutorials-core')
 
         compile 'com.navercorp.lucy:lucy-xss:1.6.3'
+
+        compile 'com.jayway.jsonpath:json-path:2.2.0',
+                'com.jayway.jsonpath:json-path-assert:2.2.0'
     }
 
     jar {
