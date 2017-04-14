@@ -44,7 +44,10 @@ configure(allprojects) {
         }
 
         testCompile "junit:junit:$junitVersion",
-                    "org.jmock:jmock-junit4:2.8.2"
+                    'org.jmock:jmock-junit4:2.8.2'
+
+        testCompile 'com.jayway.jsonpath:json-path:2.2.0',
+                    'com.jayway.jsonpath:json-path-assert:2.2.0'
 
         compile 'org.aspectj:aspectjweaver:1.8.9'
 
@@ -83,9 +86,6 @@ project(':spring-tutorials-aspectj-xss') {
         compile project(':spring-tutorials-core')
 
         compile 'com.navercorp.lucy:lucy-xss:1.6.3'
-
-        compile 'com.jayway.jsonpath:json-path:2.2.0',
-                'com.jayway.jsonpath:json-path-assert:2.2.0'
     }
 
     jar {

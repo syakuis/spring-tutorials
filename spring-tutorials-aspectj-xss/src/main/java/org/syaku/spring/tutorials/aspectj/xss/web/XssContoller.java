@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.syaku.spring.tutorials.aspectj.xss.domain.Foo;
+import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
 import org.syaku.spring.tutorials.aspectj.xss.support.XssValid;
 
 /**
@@ -22,8 +24,8 @@ public class XssContoller {
 
 	@GetMapping(value = "")
 	@ResponseBody
-	public Foo demo(@XssValid Foo foo, Model model) {
-		System.out.println(foo.toString());
+	public Foo demo(@XssClean Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
+		System.out.println("---s------>" + text);
 		return foo;
 	}
 }
