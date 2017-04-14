@@ -81,6 +81,8 @@ project(':spring-tutorials-core') {
 project(':spring-tutorials-aspectj-xss') {
     dependencies {
         compile project(':spring-tutorials-core')
+
+        compile 'com.navercorp.lucy:lucy-xss:1.6.3'
     }
 
     jar {

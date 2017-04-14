@@ -32,6 +32,8 @@ public class XssContoller {
 		logger.debug("controller foo ====> {}", foo.toString());
 		logger.debug(model.toString());
 		xssService.test();
+
+		model.addAttribute("name", foo.getName());
 		return "/aspectj/xss/demo.view";
 	}
 }

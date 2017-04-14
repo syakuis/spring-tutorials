@@ -50,7 +50,7 @@ public class XssContollerTest {
 	@Test
 	public void demo() throws Exception {
 		logger.debug("demo controller test");
-		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/aspectj/xss?name=good")).andReturn();
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/aspectj/xss?name=\"\\\"><script>alert('xss');</script>\"")).andReturn();
 
 		Foo foo = new Foo();
 		foo.setName("good");

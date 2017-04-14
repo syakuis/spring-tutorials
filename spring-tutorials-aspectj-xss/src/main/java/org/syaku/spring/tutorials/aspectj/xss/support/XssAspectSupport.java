@@ -1,5 +1,6 @@
 package org.syaku.spring.tutorials.aspectj.xss.support;
 
+import com.nhncorp.lucy.security.xss.XssPreventer;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -71,12 +72,19 @@ public class XssAspectSupport {
 
 					// private 필드를 읽기 위해 getDeclaredFields 메서드를 사용한다.
 					for (Field field : clz.getDeclaredFields()) {
-						for (Annotation annotation2 : field.getDeclaredAnnotations()) {
-							if (annotation instanceof XssFilter) {
-								// private 접근자에 접근할 수 있게 설정한다.
-								field.setAccessible(true);
-								logger.debug("{} : {}", field.getName(), field.get(object));
-								field.set(object, "2");
+						if (field.getType() == String.class) {
+							for (Annotation annotation2 : field.getDeclaredAnnotations()) {
+								if (annotation2 instanceof XssFilter) {
+									// private 접근자에 접근할 수 있게 설정한다.
+									field.setAccessible(true);
+
+									String name = field.getName();
+									String value = (String) field.get(object);
+									String escape = XssPreventer.escape(value);
+									field.set(object, escape);
+
+									logger.debug("{} : {} --> {}", name, value, escape);
+								}
 							}
 						}
 					}
