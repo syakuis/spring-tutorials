@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -78,10 +79,13 @@ public class MainTest {
 				clazz.equals(Float.class);
 	}
 
-	private void getCollection(Field field, Collection collection) throws IllegalAccessException {
+	private void getCollection(Field field, Collection collection, ValueString valueString) throws IllegalAccessException {
 		for (Object object : collection) {
 			if (isWrapperType(object.getClass()) || object.getClass() == String.class) {
 				logger.debug("({}) {} = {}", field.getType(), field.getName(), object);
+				if (valueString != null) {
+
+				}
 			} else {
 				getFields(object);
 			}
@@ -104,41 +108,24 @@ public class MainTest {
 			if (value != null) {
 				logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
 
+				ValueString valueString = null;
+
+				for (Annotation annotation : field.getAnnotations()) {
+					if (annotation.annotationType() == ValueString.class && type == String.class) {
+						valueString = (ValueString) annotation;
+					}
+				}
+
 				Class valueClz = value.getClass();
 
 				if (isWrapperType(valueClz) || valueClz == String.class) {
 					logger.debug("reference....... {} = {}", name, value);
 				} else if (valueClz.isArray()) {
-					for (Object o2 : (Object[]) value){
-						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("Array {} = {}", name, o2);
-						} else {
-							getFields(o2);
-						}
-					}
+					getCollection(field, Arrays.asList(value), valueString);
 				} else if (Collection.class.isAssignableFrom(field.getType())) {
-					//logger.debug("collection....... {} = {}", name, value);
-
-					Collection collection = (Collection) value;
-					for (Object o2 : collection) {
-						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("Collection {} = {}", name, o2);
-						} else {
-							getFields(o2);
-						}
-					}
+					getCollection(field, (Collection) value, valueString);
 				} else if (Map.class.isAssignableFrom(field.getType())) {
-					//logger.debug("map....... {} = {}", name, value);
-					Map map = (Map) value;
-					Collection collection = map.values();
-					//getCollection(field, ((Map) value).values());
-					for (Object o2 : collection) {
-						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("Map {} = {}", name, o2);
-						} else {
-							getFields(o2);
-						}
-					}
+					getCollection(field, ((Map) value).values(), valueString);
 				} else {
 					getFields(value);
 				}
