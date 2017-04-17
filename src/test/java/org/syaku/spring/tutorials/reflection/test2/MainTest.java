@@ -54,14 +54,17 @@ public class MainTest {
 		foo.setMap(map);
 
 		Map mapToo = new HashMap();
-		map.put("111", new Too());
-		map.put("112",  new Too("1", Arrays.asList("1","1","1","1","1")));
-		map.put("113",  new Too());
+		mapToo.put("111", new Too());
+		mapToo.put("112",  new Too("1", Arrays.asList("1","1","1","1","1")));
+		mapToo.put("113",  new Too());
+		foo.setMapToo(mapToo);
 	}
 
 	@Test
-	public void test() throws IllegalArgumentException, IllegalAccessException {
-		getField(foo);
+	public void test() throws IllegalAccessException {
+		getFields(foo);
+
+		logger.debug(foo.toString());
 	}
 
 	private static boolean isWrapperType(Class<?> clazz) {
@@ -75,11 +78,17 @@ public class MainTest {
 				clazz.equals(Float.class);
 	}
 
-	private void getFields() {
-
+	private void getCollection(Field field, Collection collection) throws IllegalAccessException {
+		for (Object object : collection) {
+			if (isWrapperType(object.getClass()) || object.getClass() == String.class) {
+				logger.debug("({}) {} = {}", field.getType(), field.getName(), object);
+			} else {
+				getFields(object);
+			}
+		}
 	}
 
-	private void getField(Object object) throws IllegalArgumentException, IllegalAccessException {
+	private void getFields(Object object) throws IllegalAccessException {
 		Class clz = object.getClass();
 		Field[] fields = clz.getDeclaredFields();
 
@@ -93,44 +102,45 @@ public class MainTest {
 			//logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
 
 			if (value != null) {
-				//logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
+				logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
 
 				Class valueClz = value.getClass();
-				//System.out.println(valueClz.isArray());
 
 				if (isWrapperType(valueClz) || valueClz == String.class) {
 					logger.debug("reference....... {} = {}", name, value);
 				} else if (valueClz.isArray()) {
 					for (Object o2 : (Object[]) value){
 						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("collection {} = {}", name, o2);
+							logger.debug("Array {} = {}", name, o2);
 						} else {
-							getField(o2);
+							getFields(o2);
 						}
 					}
 				} else if (Collection.class.isAssignableFrom(field.getType())) {
 					//logger.debug("collection....... {} = {}", name, value);
+
 					Collection collection = (Collection) value;
 					for (Object o2 : collection) {
 						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("collection {} = {}", name, o2);
+							logger.debug("Collection {} = {}", name, o2);
 						} else {
-							getField(o2);
+							getFields(o2);
 						}
 					}
 				} else if (Map.class.isAssignableFrom(field.getType())) {
 					//logger.debug("map....... {} = {}", name, value);
 					Map map = (Map) value;
 					Collection collection = map.values();
+					//getCollection(field, ((Map) value).values());
 					for (Object o2 : collection) {
 						if (isWrapperType(o2.getClass()) || o2.getClass() == String.class) {
-							logger.debug("map {} = {}", name, o2);
+							logger.debug("Map {} = {}", name, o2);
 						} else {
-							getField(o2);
+							getFields(o2);
 						}
 					}
 				} else {
-					getField(value);
+					getFields(value);
 				}
 			}
 

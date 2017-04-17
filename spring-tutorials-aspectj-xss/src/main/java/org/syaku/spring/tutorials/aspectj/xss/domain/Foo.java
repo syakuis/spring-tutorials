@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
 import org.syaku.spring.tutorials.aspectj.xss.support.XssType;
 
+import java.util.List;
+
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
@@ -23,4 +25,6 @@ public class Foo {
 	private int count;
 	@XssClean(XssType.ESCAPE)
 	private String escape;
+	@XssClean(XssType.ESCAPE)
+	private List<String> lists;
 }

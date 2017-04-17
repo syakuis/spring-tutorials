@@ -1,27 +1,27 @@
-package org.syaku.spring.tutorials.reflection.test2;
+package org.syaku.reflection.test;
 
 import lombok.Data;
 import lombok.ToString;
+import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
 
 import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
- * @since 2017. 4. 17.
+ * @since 2017. 4. 15.
  */
-@Data
 @ToString
+@Data
 public class Too {
-	String name;
-	@ValueString("change value")
-	List<String> names;
+	@XssClean
+	private String name;
+	private List<String> too2s;
 
 	public Too() {
 	}
 
-	public Too(String name, List<String> names) {
+	public Too(String name) {
 		this.name = name;
-		this.names = names;
 	}
 }

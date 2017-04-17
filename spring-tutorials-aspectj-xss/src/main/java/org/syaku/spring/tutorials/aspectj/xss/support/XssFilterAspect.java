@@ -25,6 +25,20 @@ import java.lang.reflect.Method;
  *
  * method get return : http://stackoverflow.com/questions/15697217/how-to-get-return-value-of-invoked-method
  * method set :
+ *
+ * 찾기단계
+ * @XssClean
+ * Type ? (1) String.class : (2) Object
+ * (1) 처리단계로 이동
+ * (2) (찾기단계 재귀) 클래스 내부에 @XssClean 찾기 그리고 Type ? (1) String.class : (2) Object 처리
+ *
+ * 처리단계
+ * String.class (필터처리단계)
+ * GenericType 체크 String.class (필터처리단계)
+ * 깊은 타입인 경우 처리단계 재귀)
+ *
+ * 필터처리단계
+ *
  */
 @Aspect
 @Component
@@ -76,7 +90,7 @@ public class XssFilterAspect {
 	}
 
 	@Before("execution(public * *(.., @XssClean (*))) || execution(* *(@XssClean (*), ..)) || execution(* *(.., @XssClean (*), ..))")
-	public void xssFilter(JoinPoint point) throws IllegalAccessException, InvocationTargetException {
+	public void xssFilter(JoinPoint point) throws IllegalAccessException, InvocationTargetException, NoSuchFieldException {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		Method method = signature.getMethod();
 		Annotation[][] methodAnnotations = method.getParameterAnnotations();
@@ -95,17 +109,24 @@ public class XssFilterAspect {
 				if (!object.getClass().isPrimitive()) {
 					if (annotation instanceof XssClean) {
 						if (clz == String.class) {
-							logger.debug("===========> string arg {} : {}", clz.getName(), object.toString());
-							String value = (String) object;
 							XssType xssType = ((XssClean) annotation).value();
 
+							Field field = clz.getDeclaredField("value");
+
+							String value = (String) object;
+							logger.debug("{} : {}", field.getName(), value);
+							String filter;
+
 							if (xssType.equals(XssType.SAX)) {
-								objects[i] = xssSaxFilter.doFilter(value);
+								filter = xssSaxFilter.doFilter(value);
 							} else if (xssType.equals(XssType.DOM)) {
-								objects[i] = xssFilter.doFilter(value);
+								filter = xssFilter.doFilter(value);
 							} else {
-								objects[i] = XssPreventer.escape(value);
+								filter = XssPreventer.escape(value);
 							}
+
+							field.setAccessible(true);
+							field.set(object, filter.toCharArray());
 						} else {
 							clzFinding(object);
 						}
@@ -115,6 +136,6 @@ public class XssFilterAspect {
 			i++;
 		}
 
-		method.invoke(point.getThis(), objects);
+		//method.invoke(point.getThis(), objects);
 	}
 }
