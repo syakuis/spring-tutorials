@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -19,17 +21,16 @@ public class MainTest {
 	private static final Logger logger = LoggerFactory.getLogger(MainTest.class);
 
 	private Foo foo;
-	private int depth = 0;
 
 	@Before
 	public void setUp() {
 		foo = new Foo();
 
-		foo.setName("good");
-		foo.setCount(1);
-		foo.setListString(Arrays.asList("good1", "good2"));
+//		foo.setName("good");
+		//foo.setCount(1);
+/*		foo.setListString(Arrays.asList("good1", "good2"));
 		foo.setListInter(Arrays.asList(1, 2, 3));
-
+*/
 		foo.setListToo(Arrays.asList(Arrays.asList(
 				new Too("1", Arrays.asList("1","1","1","1","1")),
 				new Too("2", null),
@@ -41,7 +42,7 @@ public class MainTest {
 				new Too("3", null),
 				new Too("4", null)
 		)));
-
+/*
 		foo.setToo(new Too("11", Arrays.asList("111", "112")));
 
 		Set setToo = new HashSet();
@@ -58,7 +59,7 @@ public class MainTest {
 		mapToo.put("111", new Too());
 		mapToo.put("112",  new Too("1", Arrays.asList("1","1","1","1","1")));
 		mapToo.put("113",  new Too());
-		foo.setMapToo(mapToo);
+		foo.setMapToo(mapToo);*/
 	}
 
 	@Test
@@ -79,17 +80,18 @@ public class MainTest {
 				clazz.equals(Float.class);
 	}
 
-	private void getCollection(Field field, Collection collection, ValueString valueString) throws IllegalAccessException {
+	private void getCollection(Field field, Collection collection) throws IllegalAccessException {
 		for (Object object : collection) {
 			if (isWrapperType(object.getClass()) || object.getClass() == String.class) {
-				logger.debug("({}) {} = {}", field.getType(), field.getName(), object);
-				if (valueString != null) {
-
-				}
+				logger.debug("success - ({}) {} = {}", field.getType(), field.getName(), object);
 			} else {
 				getFields(object);
 			}
 		}
+	}
+
+	private void getGeneric(Object object) {
+
 	}
 
 	private void getFields(Object object) throws IllegalAccessException {
@@ -102,33 +104,41 @@ public class MainTest {
 			String name = field.getName();
 			field.setAccessible(true);
 			Object value = field.get(object);
-
-			//logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
-
+			logger.debug("Field - @{} {} {} = {}", genericType, name, value);
 			if (value != null) {
-				logger.debug("----> {}<{}> {} = {}", type, genericType, name, value);
-
-				ValueString valueString = null;
-
-				for (Annotation annotation : field.getAnnotations()) {
-					if (annotation.annotationType() == ValueString.class && type == String.class) {
-						valueString = (ValueString) annotation;
-					}
-				}
+				//logger.debug("Field - @{} {} {} = {}", value.hashCode(), genericType, name, value);
 
 				Class valueClz = value.getClass();
 
-				if (isWrapperType(valueClz) || valueClz == String.class) {
-					logger.debug("reference....... {} = {}", name, value);
-				} else if (valueClz.isArray()) {
-					getCollection(field, Arrays.asList(value), valueString);
-				} else if (Collection.class.isAssignableFrom(field.getType())) {
-					getCollection(field, (Collection) value, valueString);
-				} else if (Map.class.isAssignableFrom(field.getType())) {
-					getCollection(field, ((Map) value).values(), valueString);
-				} else {
-					getFields(value);
+				if (genericType instanceof ParameterizedType) {
+					ParameterizedType pType = (ParameterizedType) genericType;
+					logger.debug("{} {} {}", valueClz.getTypeName(), field.getType(), pType.getOwnerType());
+					System.out.print("Raw type: " + Collection.class.isAssignableFrom(field.getType()));
+					System.out.println("Type args: " + pType.getActualTypeArguments()[0]);
+					getGeneric(value);
 				}
+/*
+
+				if (genericType instanceof ParameterizedType) {
+					ParameterizedType pType = (ParameterizedType) genericType;
+					System.out.print("Raw type: " + pType.getRawType() + " - ");
+					System.out.println("Type args: " + pType.getActualTypeArguments()[0]);
+					getFields(value);
+				} else {
+					if (isWrapperType(field.getType()) || field.getType() == String.class) {
+						logger.debug("success - ({}) {} = {}", type, name, value);
+					} else if (Collection.class.isAssignableFrom(field.getType())) {
+						//logger.debug("Field - @{} {} {} = {}", value.hashCode(), genericType, name, value);
+						getCollection(field, (Collection) value);
+					} else if (Map.class.isAssignableFrom(field.getType())) {
+						getCollection(field, ((Map) value).values());
+					} else if (type == Array.class) {
+						getCollection(field, Arrays.asList(value));
+					} else {
+						getFields(value);
+					}
+				}
+				 */
 			}
 
 		}

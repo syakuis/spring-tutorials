@@ -27,4 +27,6 @@ public class Foo {
 	private Map<String, Integer> map;
 	private Map<String, Too> mapToo;
 	private Map<String, List<String>> mapString;
+	private Too[] toos;
+	private String[] strs;
 }
