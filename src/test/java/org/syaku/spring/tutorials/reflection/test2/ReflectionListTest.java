@@ -131,7 +131,7 @@ public class ReflectionListTest {
 
 	private void getValue(Object value, Object object) throws ClassNotFoundException {
 
-		logger.debug("Value - {} {}", value.getClass().getTypeName(), cast(value.getClass(), value));
+	//	logger.debug("Value - {} {}", value.getClass().getTypeName(), cast(value.getClass(), value));
 	}
 
 	private void getObject(Object object) throws IllegalAccessException, ClassNotFoundException {
@@ -157,8 +157,12 @@ public class ReflectionListTest {
 	}
 
 	private void getMap(Object object) throws IllegalAccessException, ClassNotFoundException {
+		Map map = new HashMap();
 		for(Object value : ((Map) object).values()) {
 			getType(value, object);
+			map.put(value, value);
 		}
+
+		System.out.println(map.toString());
 	}
 }
