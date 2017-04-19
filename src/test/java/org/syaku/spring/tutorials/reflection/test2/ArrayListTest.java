@@ -20,7 +20,7 @@ public class ArrayListTest {
 	public void fooTest() throws InstantiationException, IllegalAccessException {
 		Foo foo = new Foo();
 
-		logger.debug("{}", foo.getClass().getTypeName());
+		logger.debug("{} {}", foo.getClass().getTypeName(), foo.toString());
 
 		Map mapToo = new HashMap();
 		mapToo.put("111", new Too());
@@ -28,7 +28,9 @@ public class ArrayListTest {
 		mapToo.put("113",  new Too());
 		foo.setMapToo(mapToo);
 
-		logger.debug("{} {}", foo.getClass().getTypeName(), foo.toString());
+		Foo foo2 = (Foo) getType(foo);
+
+		logger.debug("{} {}", foo2.getClass().getTypeName(), foo2.toString());
 	}
 
 	public void listTest() throws InstantiationException, IllegalAccessException {
@@ -139,6 +141,7 @@ public class ArrayListTest {
 	}
 
 	private Object getType(Object value) throws IllegalAccessException, InstantiationException {
+		logger.debug("Type - {} {}", value.getClass().getTypeName(), value);
 		if (value == null) return null;
 		Class clz = value.getClass();
 
@@ -194,6 +197,7 @@ public class ArrayListTest {
 			Object key = keys.next();
 			result.put(key, getType(map.get(key)));
 		}
+
 
 		return result;
 	}
