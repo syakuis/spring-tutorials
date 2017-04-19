@@ -23,6 +23,7 @@ public class Foo {
 	private List<Integer> listInter;
 	private List<List<Too>> listToo;
 	private Set<Too> setToo;
+	private Set<String> setTypeString;
 	private Too too;
 	private Map<String, Integer> map;
 	private Map<String, Too> mapToo;
