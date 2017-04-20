@@ -1,11 +1,12 @@
 package org.syaku.spring.tutorials.reflection.test2;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.syaku.spring.tutorials.aspectj.xss.support.ObjectControl;
+import org.syaku.spring.tutorials.aspectj.xss.support.ObjectControlSupport;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -16,11 +17,17 @@ import java.util.*;
 public class ArrayListTest {
 	private static final Logger logger = LoggerFactory.getLogger(ArrayListTest.class);
 
+	ObjectControl objectControl;
+
+	@Before
+	public void setUp() {
+		ObjectControlSupport objectControlSupport = new XssFilterObjectControlSupport();
+		objectControl = new ObjectControl(objectControlSupport);
+	}
+
 	@Test
 	public void fooTest() throws InstantiationException, IllegalAccessException {
 		Foo foo = new Foo();
-
-		logger.debug("{} {}", foo.getClass().getTypeName(), foo.toString());
 
 		Map mapToo = new HashMap();
 		mapToo.put("111", new Too());
@@ -28,9 +35,10 @@ public class ArrayListTest {
 		mapToo.put("113",  new Too());
 		foo.setMapToo(mapToo);
 
-		Foo foo2 = (Foo) getType(foo);
+		Foo foo2 = (Foo) objectControl.getType(foo);
 
-		logger.debug("{} {}", foo2.getClass().getTypeName(), foo2.toString());
+		logger.debug("foo {} {}", foo.getClass().getTypeName(), foo.toString());
+		logger.debug("foo2 {} {}", foo2.getClass().getTypeName(), foo2.toString());
 	}
 
 	public void listTest() throws InstantiationException, IllegalAccessException {
@@ -46,7 +54,7 @@ public class ArrayListTest {
 		List<Set<List<String>>> list = new ArrayList<>();
 		list.add(set);
 
-		Object object = getType(list);
+		Object object = objectControl.getType(list);
 
 
 
@@ -61,7 +69,7 @@ public class ArrayListTest {
 				Arrays.asList("good1", "good2", "good3", "good4")
 		);
 		logger.debug("result @{} ({}) {}", result.hashCode(), result.getClass(), result);
-		List<String> result2 = (List) getType(result);
+		List<String> result2 = (List) objectControl.getType(result);
 		logger.debug(" + result @{} ({}) {} // {}", result2.hashCode(), result2.getClass(), result2);
 
 
@@ -116,148 +124,8 @@ public class ArrayListTest {
 				"Array String - 4"
 		});
 
-		Foo foo2 = (Foo) getType(foo);
+		Foo foo2 = (Foo) objectControl.getType(foo);
 		logger.debug(" + result @{} ({}) {} // {}", foo2.hashCode(), foo2.getClass(), foo2);
 	}
 
-	private Object replaceStr(Object object) {
-		logger.debug("{}", object);
-		if (object != null && object.getClass() == String.class) {
-			return ((String) object).replaceAll("good", "GOOD");
-		}
-
-		return object;
-	}
-
-	private boolean isWrapperType(Class<?> clazz) {
-		return clazz.equals(Boolean.class) ||
-				clazz.equals(Integer.class) ||
-				clazz.equals(Character.class) ||
-				clazz.equals(Byte.class) ||
-				clazz.equals(Short.class) ||
-				clazz.equals(Double.class) ||
-				clazz.equals(Long.class) ||
-				clazz.equals(Float.class);
-	}
-
-	private Object getType(Object value) throws IllegalAccessException, InstantiationException {
-		logger.debug("Type - {} {}", value.getClass().getTypeName(), value);
-		if (value == null) return null;
-		Class clz = value.getClass();
-
-		if (isWrapperType(clz) || clz == String.class) {
-			return replaceStr(value);
-		} else if (clz.isArray()) {
-			return getArray(value);
-		} else if (Collection.class.isAssignableFrom(clz)) {
-			return getCollection(value);
-		} else if (Map.class.isAssignableFrom(clz)) {
-			return getMap(value);
-		} else {
-			return getObject(value);
-		}
-	}
-
-	private Object getObject(Object object) throws IllegalAccessException, InstantiationException {
-		Class clz = object.getClass();
-		Field[] fields = clz.getDeclaredFields();
-
-		for(Field field : fields) {
-			field.setAccessible(true);
-			Object value = field.get(object);
-			if (value != null) {
-				field.set(object, getType(value));
-			}
-		}
-
-		return object;
-	}
-
-	private Object[] getArray(Object object) throws IllegalAccessException, InstantiationException {
-		Object[] objects = (Object[]) object;
-		int count = objects.length;
-
-		Object[] result = (Object[]) Array.newInstance(object.getClass().getComponentType(), count);
-
-		logger.debug("{}", count);
-
-		for (int i = 0; i < count; i++) {
-			Array.set(result, i, getType(objects[i]));
-		}
-
-		return result;
-	}
-
-	private Map getMap(Object object) throws IllegalAccessException, InstantiationException {
-		Map result = (Map) object.getClass().newInstance();
-		Map map = (Map) object;
-
-		Iterator keys = map.keySet().iterator();
-		while(keys.hasNext()) {
-			Object key = keys.next();
-			result.put(key, getType(map.get(key)));
-		}
-
-
-		return result;
-	}
-
-	// 원래 클래스 타입으로 새로운 객체를 생성해야 한다.
-	private List getList(Object object) throws InstantiationException, IllegalAccessException {
-		Class clz = object.getClass();
-		List result = Collections.emptyList();
-
-		try {
-			// Arrays.asTo(...) ArrayList 와 다른 타입이므로 변경한다.
-			Class<?> arraysType = Class.forName("java.util.Arrays$ArrayList");
-			if (arraysType.isAssignableFrom(clz)) {
-				result = new ArrayList();
-			} else {
-				result = (List) object.getClass().newInstance();
-			}
-
-			for(Object value : (List) object) {
-				result.add(getType(value));
-			}
-		} catch (ClassNotFoundException e) {
-			logger.debug(e.getMessage());
-		}
-
-		return result;
-	}
-
-	private Set getSet(Object object) throws InstantiationException, IllegalAccessException {
-		Set result = (Set) object.getClass().newInstance();
-
-		for(Object value : (Set) object) {
-			result.add(getType(value));
-		}
-
-		return result;
-	}
-
-	// Collection type 으로 합치기
-
-	private Collection getCollection(Object object) throws InstantiationException, IllegalAccessException {
-		Class clz = object.getClass();
-		Collection result = Collections.emptyList();
-
-		try {
-			// Arrays.asTo(...) ArrayList 와 다른 타입이므로 변경한다.
-			Class<?> arraysType = Class.forName("java.util.Arrays$ArrayList");
-			if (arraysType.isAssignableFrom(clz)) {
-				result = new ArrayList();
-			} else {
-				result = (Collection) object.getClass().newInstance();
-			}
-
-			for(Object value : (Collection) object) {
-				result.add(getType(value));
-			}
-		} catch (ClassNotFoundException e) {
-			logger.debug(e.getMessage());
-		}
-
-		return result;
-	}
 }

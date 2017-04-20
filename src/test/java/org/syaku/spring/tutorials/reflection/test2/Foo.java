@@ -15,9 +15,7 @@ import java.util.Set;
 @Data
 @ToString
 public class Foo {
-	@ValueString
 	public String name;
-	@ValueString
 	private int count = 2;
 	private List<String> listString;
 	private List<Integer> listInter;

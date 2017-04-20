@@ -2,7 +2,6 @@ package org.syaku.spring.tutorials.reflection.test2;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
 
 import java.util.List;
 
@@ -15,8 +14,6 @@ import java.util.List;
 @ToString
 public class Too {
 	String name;
-	@ExString
-	@ValueString
 	List<String> names;
 
 	public Too() {
