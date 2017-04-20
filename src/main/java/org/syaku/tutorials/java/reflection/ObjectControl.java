@@ -1,4 +1,4 @@
-package org.syaku.spring.tutorials.aspectj.xss.support;
+package org.syaku.tutorials.java.reflection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,30 +67,39 @@ public class ObjectControl {
 		Class clz = object.getClass();
 		Field[] fields = clz.getDeclaredFields();
 
+		logger.debug("in {} ({}) {}", clz.getComponentType(), clz.getTypeName(), object.hashCode());
+
 		for(Field field : fields) {
 			field.setAccessible(true);
 			Object value = field.get(object);
-			Annotation annotation = field.getAnnotation(this.annotation);
+			Annotation annotation = null;
 			boolean isAnnoType = true;
 
-			if (annotation != null && this.annotation.equals(annotation.annotationType())) {
-				isAnnoType = this.annotation.equals(annotation.annotationType());
+			if (this.annotation != null) {
+				annotation = field.getAnnotation(this.annotation);
+				if (annotation != null && this.annotation.equals(annotation.annotationType())) {
+					isAnnoType = this.annotation.equals(annotation.annotationType());
 
-				if (logger.isDebugEnabled()) {
-					logger.debug("Field Annotation {} :: {} = {} equals {}",
-							field.getName(),
-							isAnnoType,
-							this.annotation,
-							annotation.annotationType()
-					);
+					if (logger.isDebugEnabled()) {
+						logger.debug("Field Annotation {} :: {} = {} equals {}",
+								field.getName(),
+								isAnnoType,
+								this.annotation,
+								annotation.annotationType()
+						);
+					}
 				}
 			}
 
 			// annotation 조건이 있는 경우
 			if (value != null && isAnnoType) {
+				logger.debug("change {} {} {}", isAnnoType, value, field.get(object));
+
 				field.set(object, getType(value, annotation));
 			}
 		}
+
+		logger.debug("out ({}) {} in equals {}", object.getClass().getTypeName(), object.hashCode());
 
 		return object;
 	}

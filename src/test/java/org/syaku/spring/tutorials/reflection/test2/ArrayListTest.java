@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.spring.tutorials.aspectj.xss.support.ObjectControl;
-import org.syaku.spring.tutorials.aspectj.xss.support.ObjectControlSupport;
+import org.syaku.tutorials.java.reflection.ObjectControl;
+import org.syaku.tutorials.java.reflection.ObjectControlSupport;
 
 import java.util.*;
 

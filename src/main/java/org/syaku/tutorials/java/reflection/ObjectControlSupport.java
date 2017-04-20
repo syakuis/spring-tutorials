@@ -1,4 +1,4 @@
-package org.syaku.spring.tutorials.aspectj.xss.support;
+package org.syaku.tutorials.java.reflection;
 
 import java.lang.annotation.Annotation;
 
