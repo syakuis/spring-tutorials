@@ -8,6 +8,7 @@ import org.syaku.tutorials.java.reflection.method.MethodTest;
 import org.syaku.tutorials.java.reflection.model.Foo;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,19 +68,21 @@ public class ObjectTest {
 
 				// 자료형인 경우에만
 				if (isWrapperType(clz)) {
+					Field field = clz.getDeclaredField("value");
+					field.setAccessible(true);
 
-					Field[] fields = clz.getDeclaredFields();
-					for (Field field : fields) {
-						field.setAccessible(true);
-						if ("value".equals(field.getName())) {
-							field.set(object, "1");
-							logger.debug("{} = {}", field.getName(), value);
-						}
-					}
+					Field modifiers = field.getClass().getDeclaredField("modifiers");
+					modifiers.setAccessible(true);
 
+					modifiers.set(field, field.getModifiers() & ~Modifier.FINAL);
+					field.set(null, "1");
+
+					logger.debug("{} = {}", field.getName(), value);
 				}
 
 			}
+		}catch (NoSuchFieldException e) {
+			logger.error(e.getMessage(), e);
 		} catch (IllegalAccessException e) {
 			logger.error(e.getMessage(), e);
 		}
