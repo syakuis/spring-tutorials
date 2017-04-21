@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -41,6 +43,12 @@ public class ObjectControlTest {
 		foo.setNumber(1);
 		foo.setStringArray(new String[]{ "string", "string2", "string3" });
 
+		Map<String, Integer> map = new HashMap<>();
+		map.put("1", 1);
+		map.put("2", 2);
+		map.put("3", 3);
+		foo.setStringMap(map);
+
 		logger.debug("foo {}", foo.getName());
 		logger.debug("foo {}", foo.getNumber());
 		logger.debug("foo {}", Arrays.asList(foo.getStringArray()).toString());
@@ -53,7 +61,15 @@ public class ObjectControlTest {
 
 		Foo foo22 = (Foo) objectControl2.getType(foo);
 		logger.debug("success {}", foo22);
+		logger.debug("success {}", foo);
 
+		//Map<String, Integer> map2 = foo22.getStringMap();
+		//logger.debug("{}", map2.get("1"));
+
+
+	}
+
+	private void getMethod() {
 
 	}
 

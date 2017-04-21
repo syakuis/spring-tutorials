@@ -12,7 +12,10 @@ import java.lang.annotation.Annotation;
 public class XssFilterObjectControlSupport implements ObjectControlSupport {
 	@Override
 	public Object value(Object object, Annotation annotation) {
-		return null;
+		if (object != null && object.getClass() == String.class) {
+			return ((String) object).replaceAll("string", "STRING");
+		}
+		return object;
 	}
 
 	@Override

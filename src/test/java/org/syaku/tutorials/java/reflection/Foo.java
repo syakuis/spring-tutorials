@@ -18,6 +18,6 @@ public class Foo {
 	private int number;
 	private List<Too> tooList;
 	private String[] stringArray;
-	private Map<String, String> stringMap;
+	private Map<String, Integer> stringMap;
 	private Map<String, List<Too>> tooListMap;
 }
