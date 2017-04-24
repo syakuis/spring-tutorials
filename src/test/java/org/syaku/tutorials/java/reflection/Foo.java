@@ -2,7 +2,7 @@ package org.syaku.tutorials.java.reflection;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.FilterXss;
 
 import java.util.List;
 import java.util.Map;
@@ -18,13 +18,13 @@ public class Foo {
 
 	private String name;
 	private int number;
-	@XssClean
+	@FilterXss
 	private List<Too> tooList;
 	private String[] stringArray;
 	private Map<String, Integer> stringMap;
 	private Map<String, List<Too>> tooListMap;
 
-	public void getTest(@XssClean String name, @XssClean List<String> lists) {
+	public void getTest(@FilterXss String name, @FilterXss List<String> lists) {
 		System.out.println(name);
 	}
 }

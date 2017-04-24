@@ -2,7 +2,7 @@ package org.syaku.tutorials.reflection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.FilterXss;
 import org.syaku.tutorials.spring.xss.support.XssType;
 import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
@@ -16,7 +16,7 @@ import java.lang.annotation.Annotation;
 public class XssFilterConverter implements ObjectRefConverter {
 	private static final Logger logger = LoggerFactory.getLogger(XssFilterConverter.class);
 
-	private Class<? extends Annotation> annotation = XssClean.class;
+	private Class<? extends Annotation> annotation = FilterXss.class;
 
 	@Override
 	public Class<? extends Annotation> getAnnotation() {
@@ -29,7 +29,7 @@ public class XssFilterConverter implements ObjectRefConverter {
 
 		if (object.getClass() == String.class) {
 			if (this.annotation.equals(annotation)) {
-				XssType xssType = ((XssClean) annotation).value();
+				XssType xssType = ((FilterXss) annotation).value();
 				logger.debug("찾음!! {} {}", annotation.toString(), xssType);
 			}
 			return ((String) object).replaceAll("good", "GOOD");

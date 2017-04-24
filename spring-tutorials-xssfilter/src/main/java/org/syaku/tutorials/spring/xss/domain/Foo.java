@@ -3,7 +3,7 @@ package org.syaku.tutorials.spring.xss.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.FilterXss;
 import org.syaku.tutorials.spring.xss.support.XssType;
 
 import java.util.List;
@@ -17,14 +17,14 @@ import java.util.List;
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Foo {
-	@XssClean(XssType.DOM)
+	@FilterXss(XssType.DOM)
 	private String filter;
-	@XssClean(XssType.SAX)
+	@FilterXss(XssType.SAX)
 	private String saxFilter;
 	private String name;
 	private int count;
-	@XssClean(XssType.ESCAPE)
+	@FilterXss(XssType.ESCAPE)
 	private String escape;
-	@XssClean(XssType.ESCAPE)
+	@FilterXss(XssType.ESCAPE)
 	private List<String> lists;
 }

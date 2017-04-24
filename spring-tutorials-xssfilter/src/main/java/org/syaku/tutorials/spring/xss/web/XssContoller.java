@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.syaku.tutorials.spring.xss.domain.Foo;
-import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.FilterXss;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -23,7 +23,7 @@ public class XssContoller {
 
 	@GetMapping(value = "")
 	@ResponseBody
-	public Foo demo(@XssClean Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
+	public Foo demo(@FilterXss Foo foo, Model model, @RequestParam(value = "text", required = false) @FilterXss String text) {
 		logger.debug("Controller text {}", text);
 		logger.debug("Controller foo {}", foo.getEscape());
 		return foo;

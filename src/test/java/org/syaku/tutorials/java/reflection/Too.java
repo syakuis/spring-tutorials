@@ -2,7 +2,7 @@ package org.syaku.tutorials.java.reflection;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.FilterXss;
 
 import java.util.Set;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 public class Too {
 	private String name;
-	@XssClean
+	@FilterXss
 	private Set<String> stringArraySet;
 
 	public Too() {
