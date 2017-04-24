@@ -1,4 +1,4 @@
-package org.syaku.spring.tutorials.reflection.test2;
+package org.syaku.tutorials.reflection;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package org.syaku.reflection;
+package org.syaku.tutorials.reflection.test;
 
 import lombok.Data;
 import lombok.ToString;

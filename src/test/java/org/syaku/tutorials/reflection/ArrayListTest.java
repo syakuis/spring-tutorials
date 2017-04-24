@@ -1,11 +1,11 @@
-package org.syaku.spring.tutorials.reflection.test2;
+package org.syaku.tutorials.reflection;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.tutorials.java.reflection.ObjectControl;
-import org.syaku.tutorials.java.reflection.ObjectControlSupport;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRef;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
 import java.util.*;
 
@@ -17,12 +17,12 @@ import java.util.*;
 public class ArrayListTest {
 	private static final Logger logger = LoggerFactory.getLogger(ArrayListTest.class);
 
-	ObjectControl objectControl;
+	ObjectRef ref;
 
 	@Before
 	public void setUp() {
-		ObjectControlSupport objectControlSupport = new XssFilterObjectControlSupport();
-		objectControl = new ObjectControl(objectControlSupport);
+		ObjectRefConverter converter = new XssFilterConverter();
+		ref = new ObjectRef(converter);
 	}
 
 	@Test
@@ -35,7 +35,7 @@ public class ArrayListTest {
 		mapToo.put("113",  new Too());
 		foo.setMapToo(mapToo);
 
-		Foo foo2 = (Foo) objectControl.getType(foo);
+		Foo foo2 = (Foo) ref.getType(foo);
 
 		logger.debug("foo {} {}", foo.getClass().getTypeName(), foo.toString());
 		logger.debug("foo2 {} {}", foo2.getClass().getTypeName(), foo2.toString());
@@ -54,7 +54,7 @@ public class ArrayListTest {
 		List<Set<List<String>>> list = new ArrayList<>();
 		list.add(set);
 
-		Object object = objectControl.getType(list);
+		Object object = ref.getType(list);
 
 
 
@@ -69,7 +69,7 @@ public class ArrayListTest {
 				Arrays.asList("good1", "good2", "good3", "good4")
 		);
 		logger.debug("result @{} ({}) {}", result.hashCode(), result.getClass(), result);
-		List<String> result2 = (List) objectControl.getType(result);
+		List<String> result2 = (List) ref.getType(result);
 		logger.debug(" + result @{} ({}) {} // {}", result2.hashCode(), result2.getClass(), result2);
 
 
@@ -124,7 +124,7 @@ public class ArrayListTest {
 				"Array String - 4"
 		});
 
-		Foo foo2 = (Foo) objectControl.getType(foo);
+		Foo foo2 = (Foo) ref.getType(foo);
 		logger.debug(" + result @{} ({}) {} // {}", foo2.hashCode(), foo2.getClass(), foo2);
 	}
 

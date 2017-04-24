@@ -81,7 +81,7 @@ project(':spring-tutorials-core') {
     }
 }
 
-project(':spring-tutorials-aspectj-xss') {
+project(':spring-tutorials-xssfilter') {
     dependencies {
         compile project(':spring-tutorials-core')
 
@@ -89,7 +89,7 @@ project(':spring-tutorials-aspectj-xss') {
     }
 
     jar {
-        baseName = 'spring-tutorials-aspectj-xss'
+        baseName = 'spring-tutorials-xssfilter'
         version = "${tutorialsVersion}"
     }
 }
@@ -99,7 +99,7 @@ configure(rootProject) {
 
     dependencies {
         compile project(':spring-tutorials-core'),
-                project(':spring-tutorials-aspectj-xss')
+                project(':spring-tutorials-xssfilter')
 
 
         providedCompile 'javax.servlet:javax.servlet-api:3.0.1',

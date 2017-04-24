@@ -1,10 +1,10 @@
-package org.syaku.spring.tutorials.reflection.test2;
+package org.syaku.tutorials.reflection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.tutorials.java.reflection.ObjectControlSupport;
 import org.syaku.tutorials.spring.xss.support.XssClean;
 import org.syaku.tutorials.spring.xss.support.XssType;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
 import java.lang.annotation.Annotation;
 
@@ -13,8 +13,8 @@ import java.lang.annotation.Annotation;
  * @site http://syaku.tistory.com
  * @since 2017. 4. 20.
  */
-public class XssFilterObjectControlSupport implements ObjectControlSupport {
-	private static final Logger logger = LoggerFactory.getLogger(XssFilterObjectControlSupport.class);
+public class XssFilterConverter implements ObjectRefConverter {
+	private static final Logger logger = LoggerFactory.getLogger(XssFilterConverter.class);
 
 	private Class<? extends Annotation> annotation = XssClean.class;
 

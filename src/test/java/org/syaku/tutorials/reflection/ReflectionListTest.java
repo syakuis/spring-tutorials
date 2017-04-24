@@ -1,11 +1,10 @@
-package org.syaku.spring.tutorials.reflection.test2;
+package org.syaku.tutorials.reflection;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
