@@ -2,6 +2,7 @@ package org.syaku.tutorials.java.reflection;
 
 import lombok.Data;
 import lombok.ToString;
+import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
 
 import java.util.Set;
 
@@ -14,12 +15,13 @@ import java.util.Set;
 @Data
 public class Too {
 	private String name;
-	private Set<String[]> stringArraySet;
+	@XssClean
+	private Set<String> stringArraySet;
 
 	public Too() {
 	}
 
-	public Too(String name, Set<String[]> stringArraySet) {
+	public Too(String name, Set<String> stringArraySet) {
 		this.name = name;
 		this.stringArraySet = stringArraySet;
 	}

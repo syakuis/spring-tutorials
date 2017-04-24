@@ -1,5 +1,7 @@
 package org.syaku.tutorials.java.reflection;
 
+import org.syaku.spring.tutorials.aspectj.xss.support.reflection.ObjectRefConverter;
+
 import java.lang.annotation.Annotation;
 
 /**
@@ -7,7 +9,7 @@ import java.lang.annotation.Annotation;
  * @site http://syaku.tistory.com
  * @since 2017. 4. 20.
  */
-public class NoAnnoObjectControlSupport implements ObjectControlSupport {
+public class NoAnnoObjectControlSupport implements ObjectRefConverter {
 	@Override
 	public Object value(Object object, Annotation annotation) {
 		return object;

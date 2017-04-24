@@ -1,11 +1,9 @@
 package org.syaku.tutorials.java.reflection.object;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.syaku.tutorials.java.reflection.method.MethodTest;
-import org.syaku.tutorials.java.reflection.model.Foo;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

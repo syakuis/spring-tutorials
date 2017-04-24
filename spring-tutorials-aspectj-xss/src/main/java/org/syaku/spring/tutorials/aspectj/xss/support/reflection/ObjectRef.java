@@ -1,4 +1,4 @@
-package org.syaku.tutorials.java.reflection;
+package org.syaku.spring.tutorials.aspectj.xss.support.reflection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,14 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 /**
+ * @author Seok Kyun. Choi. 최석균 (Syaku)
+ * @site http://syaku.tistory.com
+ * @since 2017. 4. 24.
+ *
  * 1. 리플랙션을 이용하여 데이터 출력
  * 2. 자료형의 깊숙한 데이터까지 어떻게 출력할까? 데이터 타입도 생각해야함.
  * 3. 자료형의 깊숙한 곳까지 데이터를 어떻게 변경할까? 데이터 타입도 생각해야함.
@@ -18,21 +23,19 @@ import java.util.*;
  * 5. 기본형, 참조형 그리고 컬랙션(Primitive, Reference, Collection, Map)인 경우 어노테이션 설정을 무시하고 작동이 되어야한다.
  *    위와 같은 경우가 메서드인 경우이다. 즉 이미 어노테이션으로 검색이 된 데이터 객체를 넘겨주기때문에 어노테이션이 없는 상태로 넘어오게 된다.
  *    그래서 최초로 분석될 대상이 객체또는 메서드가 될 수 있어야 한다.
+ * 6. aspect 에서 포인트 값이 최종적으로 변경되지 않음.
  * 5. 안정성 및 기존 데이터 타입을 유지했는 지
  *
- * @author Seok Kyun. Choi. 최석균 (Syaku)
- * @site http://syaku.tistory.com
- * @since 2017. 4. 20.
  */
-public class ObjectControl {
-	private static final Logger logger = LoggerFactory.getLogger(ObjectControl.class);
+public class ObjectRef {
+	private static final Logger logger = LoggerFactory.getLogger(ObjectRef.class);
 
-	private final ObjectControlSupport objectControlSupport;
+	private final ObjectRefConverter converter;
 	private Class<? extends Annotation> annotation;
 
-	public ObjectControl(ObjectControlSupport objectControlSupport) {
-		this.objectControlSupport = objectControlSupport;
-		this.annotation = objectControlSupport.getAnnotation();
+	public ObjectRef(ObjectRefConverter converter) {
+		this.converter = converter;
+		this.annotation = converter.getAnnotation();
 	}
 
 	private boolean isWrapperType(Class<?> clazz) {
@@ -45,9 +48,24 @@ public class ObjectControl {
 				clazz.equals(Long.class) ||
 				clazz.equals(Float.class);
 	}
-	public void getMethod(Method method) {
+	public void getMethodParameter(Method method, Object[] args) throws IllegalAccessException, InstantiationException {
 		// 메서드 파라메터 모든 어노에티션을 가져온다.
-		Annotation[][] methodAnnotations = method.getParameterAnnotations();
+		Parameter[] parameters = method.getParameters();
+
+		int size = args.length;
+
+		if (size != parameters.length) {
+			throw new IndexOutOfBoundsException("파라메터의 수가 일치하지 않아요.");
+		}
+
+		for (int i = 0; i < size; i++) {
+			Annotation annotation = parameters[i].getAnnotation(this.annotation);
+			if (annotation != null) {
+				logger.debug("Method parameter before value {}", args[i]);
+				args[i] = getType(args[i], annotation);
+				logger.debug("Method parameter after value {}", args[i]);
+			}
+		}
 	}
 
 	public Object getType(Object value) throws IllegalAccessException, InstantiationException {
@@ -59,7 +77,8 @@ public class ObjectControl {
 		Class clz = value.getClass();
 
 		if (isWrapperType(clz) || clz == String.class) {
-			return objectControlSupport.value(value, annotation);
+			logger.debug("Object Reference Type {}, Annotation {}", clz.getName(), annotation);
+			return converter.value(value, annotation);
 		} else if (clz.isArray()) {
 			return getArray(value);
 		} else if (Collection.class.isAssignableFrom(clz)) {

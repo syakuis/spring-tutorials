@@ -86,7 +86,7 @@ public class XssContollerTest {
 
 					logger.debug("{} ==> test response {} ===> {}", name, result.getResponse().getStatus(), result.getResponse().getContentAsString());
 				} catch (Exception e) {
-					logger.debug(e.getMessage());
+					logger.debug(e.getMessage(), e);
 				}
 
 			}

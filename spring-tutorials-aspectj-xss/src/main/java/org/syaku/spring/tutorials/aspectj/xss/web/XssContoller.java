@@ -24,7 +24,7 @@ public class XssContoller {
 
 	@GetMapping(value = "")
 	@ResponseBody
-	public Foo demo(@XssClean Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
+	public Foo demo(Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
 		System.out.println("---s------>" + text);
 		return foo;
 	}
