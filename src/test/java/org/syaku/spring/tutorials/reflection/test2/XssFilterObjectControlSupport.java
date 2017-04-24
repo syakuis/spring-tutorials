@@ -3,8 +3,8 @@ package org.syaku.spring.tutorials.reflection.test2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.syaku.tutorials.java.reflection.ObjectControlSupport;
-import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
-import org.syaku.spring.tutorials.aspectj.xss.support.XssType;
+import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.XssType;
 
 import java.lang.annotation.Annotation;
 

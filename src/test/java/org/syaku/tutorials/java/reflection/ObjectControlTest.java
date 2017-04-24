@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.spring.tutorials.aspectj.xss.support.reflection.ObjectRef;
-import org.syaku.spring.tutorials.aspectj.xss.support.reflection.ObjectRefConverter;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRef;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
 import java.lang.reflect.Method;
 import java.util.*;

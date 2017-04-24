@@ -1,7 +1,7 @@
 package org.syaku.tutorials.java.reflection;
 
-import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
-import org.syaku.spring.tutorials.aspectj.xss.support.reflection.ObjectRefConverter;
+import org.syaku.tutorials.spring.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
 import java.lang.annotation.Annotation;
 import java.util.Locale;

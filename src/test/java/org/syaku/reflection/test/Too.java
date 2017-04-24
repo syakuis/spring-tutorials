@@ -2,7 +2,7 @@ package org.syaku.reflection.test;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.spring.tutorials.aspectj.xss.support.XssClean;
+import org.syaku.tutorials.spring.xss.support.XssClean;
 
 import java.util.List;
 

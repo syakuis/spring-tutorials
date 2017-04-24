@@ -34,7 +34,7 @@
 	</context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>org.syaku.spring.tutorials.boot.Bootstrap</param-value>
+		<param-value>org.syaku.tutorials.spring.boot.Bootstrap</param-value>
 	</context-param>
 
 	<listener>
@@ -50,7 +50,7 @@
 		</init-param>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>org.syaku.spring.tutorials.boot.servlet.ServletConfiguration</param-value>
+			<param-value>org.syaku.tutorials.spring.boot.servlet.ServletConfiguration</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
