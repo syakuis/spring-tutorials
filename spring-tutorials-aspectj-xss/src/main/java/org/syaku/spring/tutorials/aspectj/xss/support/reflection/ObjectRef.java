@@ -23,7 +23,7 @@ import java.util.*;
  * 5. 기본형, 참조형 그리고 컬랙션(Primitive, Reference, Collection, Map)인 경우 어노테이션 설정을 무시하고 작동이 되어야한다.
  *    위와 같은 경우가 메서드인 경우이다. 즉 이미 어노테이션으로 검색이 된 데이터 객체를 넘겨주기때문에 어노테이션이 없는 상태로 넘어오게 된다.
  *    그래서 최초로 분석될 대상이 객체또는 메서드가 될 수 있어야 한다.
- * 6. aspect 에서 포인트 값이 최종적으로 변경되지 않음.
+ * 6. aspect 에서 포인트 값이 최종적으로 변경되지 않음. Object[] args 값을 변경하기 위해 reflection {@link Array} 사용해야 한다.
  * 5. 안정성 및 기존 데이터 타입을 유지했는 지
  *
  */
@@ -62,7 +62,9 @@ public class ObjectRef {
 			Annotation annotation = parameters[i].getAnnotation(this.annotation);
 			if (annotation != null) {
 				logger.debug("Method parameter before value {}", args[i]);
-				args[i] = getType(args[i], annotation);
+				// 배열은 reflection array 사용해야 데이터를 변경할 수 있다.
+				// args[i] = getType(args[i], annotation);
+				Array.set(args, i, getType(args[i], annotation));
 				logger.debug("Method parameter after value {}", args[i]);
 			}
 		}

@@ -1,5 +1,8 @@
 package org.syaku.tutorials.aspectj.xss.web;
 
+import com.nhncorp.lucy.security.xss.XssFilter;
+import com.nhncorp.lucy.security.xss.XssPreventer;
+import com.nhncorp.lucy.security.xss.XssSaxFilter;
 import org.jmock.lib.concurrent.Blitzer;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +49,12 @@ public class XssContollerTest {
 	@Autowired
 	private WebApplicationContext wac;
 
+	@Autowired
+	private XssSaxFilter xssSaxFilter;
+
+	@Autowired
+	private XssFilter xssFilter;
+
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
@@ -85,6 +94,11 @@ public class XssContollerTest {
 							.andReturn();
 
 					logger.debug("{} ==> test response {} ===> {}", name, result.getResponse().getStatus(), result.getResponse().getContentAsString());
+
+					logger.debug("name {}", name);
+					logger.debug("escape {}", XssPreventer.escape(escape));
+					logger.debug("filter {}", xssFilter.doFilter(filter));
+					logger.debug("saxFilter {}", xssSaxFilter.doFilter(saxFilter));
 				} catch (Exception e) {
 					logger.debug(e.getMessage(), e);
 				}

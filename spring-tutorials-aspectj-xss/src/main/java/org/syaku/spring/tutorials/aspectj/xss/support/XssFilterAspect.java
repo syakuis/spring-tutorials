@@ -57,9 +57,11 @@ public class XssFilterAspect {
 	public void xssFilter(JoinPoint point) throws InstantiationException, IllegalAccessException {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		Method method = signature.getMethod();
-
+		Object[] args =  point.getArgs();
+		logger.debug("aspect {}, {}", args[2]);
 		XssFilterConverter xssFilterConverter = new XssFilterConverter(xssFilter, xssSaxFilter);
 		ObjectRef objectRef = new ObjectRef(xssFilterConverter);
-		objectRef.getMethodParameter(method, point.getArgs());
+		objectRef.getMethodParameter(method, args);
+		logger.debug("aspect {}", args[2]);
 	}
 }

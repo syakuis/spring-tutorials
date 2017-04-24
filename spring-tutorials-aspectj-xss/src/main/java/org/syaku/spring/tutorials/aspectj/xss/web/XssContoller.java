@@ -24,8 +24,9 @@ public class XssContoller {
 
 	@GetMapping(value = "")
 	@ResponseBody
-	public Foo demo(Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
-		System.out.println("---s------>" + text);
+	public Foo demo(@XssClean Foo foo, Model model,  @RequestParam(value = "text", required = false) @XssClean String text) {
+		logger.debug("Controller text {}", text);
+		logger.debug("Controller foo {}", foo.getEscape());
 		return foo;
 	}
 }
