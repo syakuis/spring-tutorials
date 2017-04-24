@@ -1,4 +1,4 @@
-package org.syaku.spring.tutorials.helloworld.web;
+package org.syaku.tutorials.spring.helloworld.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
