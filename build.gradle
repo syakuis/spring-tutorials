@@ -94,6 +94,16 @@ project(':spring-tutorials-xssfilter') {
     }
 }
 
+project(':effective') {
+    dependencies {
+    }
+
+    jar {
+        baseName = 'effective'
+        version = "${tutorialsVersion}"
+    }
+}
+
 configure(rootProject) {
     apply plugin: 'war'
 
