@@ -32,7 +32,7 @@ public class XssFilterConverter implements ObjectRefConverter {
 			return object;
 		}
 
-		XssType xssType = ((FilterXss) annotation).value();
+		XssType xssType = ((Defence) annotation).value();
 
 		String value = (String) object;
 
@@ -47,6 +47,6 @@ public class XssFilterConverter implements ObjectRefConverter {
 
 	@Override
 	public Class<? extends Annotation> getAnnotation() {
-		return FilterXss.class;
+		return Defence.class;
 	}
 }

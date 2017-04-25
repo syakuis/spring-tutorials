@@ -2,7 +2,7 @@ package org.syaku.tutorials.reflection.test.test;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.tutorials.spring.xss.support.FilterXss;
+import org.syaku.tutorials.spring.xss.support.Defence;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Data
 public class Too {
-	@FilterXss
+	@Defence
 	private String name;
 	private List<String> too2s;
 

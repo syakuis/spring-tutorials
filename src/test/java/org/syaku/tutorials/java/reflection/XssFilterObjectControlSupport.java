@@ -1,6 +1,6 @@
 package org.syaku.tutorials.java.reflection;
 
-import org.syaku.tutorials.spring.xss.support.FilterXss;
+import org.syaku.tutorials.spring.xss.support.Defence;
 import org.syaku.tutorials.spring.xss.support.reflection.ObjectRefConverter;
 
 import java.lang.annotation.Annotation;
@@ -22,6 +22,6 @@ public class XssFilterObjectControlSupport implements ObjectRefConverter {
 
 	@Override
 	public Class<? extends Annotation> getAnnotation() {
-		return FilterXss.class;
+		return Defence.class;
 	}
 }

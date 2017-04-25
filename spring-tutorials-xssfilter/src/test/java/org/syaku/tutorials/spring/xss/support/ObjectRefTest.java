@@ -20,7 +20,7 @@ public class ObjectRefTest {
 
 		ReferenceTypeConverter converter = new ReferenceTypeConverter();
 		ObjectRef ref = new ObjectRef(converter);
-		ReferenceType type = (ReferenceType) ref.getType(referenceType);
+		ReferenceType type = ref.getValue(referenceType,  ReferenceType.class);
 
 		logger.debug("{}", type);
 
@@ -40,7 +40,7 @@ public class ObjectRefTest {
 		type.setNumber(number);
 		type.setStr(str);
 
-		ReferenceType type2 = ref.getValue(type, null, ReferenceType.class);
+		ReferenceType type2 = ref.getValue(type, ReferenceType.class);
 
 		Assert.assertEquals(type.getLon(), type2.getLon());
 		Assert.assertEquals(type.getABool(), type2.getABool());
@@ -58,10 +58,5 @@ public class ObjectRefTest {
 		Assert.assertSame(type.getStr(), type2.getStr());
 
 		Assert.assertSame(type, type2);
-	}
-
-	@Test
-	public void collection() {
-
 	}
 }

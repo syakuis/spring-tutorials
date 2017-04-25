@@ -4,24 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.util.*;
 
 /**
- * 1. 리플랙션을 이용하여 데이터 출력
- * 2. 자료형의 깊숙한 데이터까지 어떻게 출력할까? 데이터 타입도 생각해야함.
- * 3. 자료형의 깊숙한 곳까지 데이터를 어떻게 변경할까? 데이터 타입도 생각해야함.
- * 4. 자료형의 깊숙한 곳까지 데이터를 변경은 했는 데.. 모든 데이터가 아닌 어노테이션에 해당하는 것들만 변경하기.
- *    자료형의 깊숙한 곳까지 어노테이션에 맞는 데이터를 변경할때 어노에티션의 값을 이용하여 처리하기.
- * 5. 기본형, 참조형 그리고 컬랙션(Primitive, Reference, Collection, Map)인 경우 어노테이션 설정을 무시하고 작동이 되어야한다.
- *    위와 같은 경우가 메서드인 경우이다. 즉 이미 어노테이션으로 검색이 된 데이터 객체를 넘겨주기때문에 어노테이션이 없는 상태로 넘어오게 된다.
- *    그래서 최초로 분석될 대상이 객체또는 메서드가 될 수 있어야 한다.
- * 6. aspect 에서 포인트 값이 최종적으로 변경되지 않음.
- * 7. primitive type autoboxing 주의 원래 타입으로 돌려주기
- * 7. 안정성 및 기존 데이터 타입을 유지했는 지
+ * 리플랙션을 이용하여 객체를 조작한다.
+ *
+ * 1. 모든 타입의 객체를 변경한다.
+ * 2. 원하는 어노테이션의 객체를 변경한다.
  *
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http ://syaku.tistory.com
@@ -40,16 +30,51 @@ public class ObjectRef {
 
 	@SuppressWarnings("unchecked")
 	public <T> T getValue(Object value, Class<T> clazz) {
-		return clazz.cast(getType(value, null));
+		return getValue(value, null, clazz);
 	}
 
+	/**
+	 * 객체의 값을 수정한다.
+	 *
+	 * @param <T>        the type parameter
+	 * @param value      the value
+	 * @param annotation the annotation
+	 * @param clazz      the clazz
+	 * @return the value
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getValue(Object value, Annotation annotation, Class<T> clazz) {
 		return clazz.cast(getType(value, annotation));
 	}
 
+	/**
+	 * 메서드의 파라메터값을 수정한다.
+	 *
+	 * @param method the method
+	 * @param args   the args
+	 */
 	public void getMethodParameter(Method method, Object[] args) {
+		// v1.7
+		int i = 0;
+		Annotation[][] methodAnnotations = method.getParameterAnnotations();
+		for (Annotation[] annotations : methodAnnotations) {
+			for (Annotation annotation : annotations) {
+				logger.debug("Method anno {}", annotation);
+				logger.debug("Method anno {}", this.annotation);
+				if (annotation != null && this.annotation.equals(annotation.annotationType())) {
+					logger.debug("Method parameter before value {}", args[i]);
+					// 배열은 reflection array 사용해야 데이터를 변경할 수 있다.
+					// args[i] = getType(args[i], annotation);
+					Array.set(args, i, getType(args[i], annotation));
+					logger.debug("Method parameter after value {}", args[i]);
+				}
+			}
+			i++;
+		}
+
 		// 메서드 파라메터 모든 어노에티션을 가져온다.
+		// v1.8
+		/*
 		Parameter[] parameters = method.getParameters();
 
 		int size = args.length;
@@ -68,6 +93,7 @@ public class ObjectRef {
 				logger.debug("Method parameter after value {}", args[i]);
 			}
 		}
+		*/
 	}
 
 	private boolean isWrapperType(Class<?> clazz) {
@@ -81,11 +107,11 @@ public class ObjectRef {
 				clazz.equals(Float.class);
 	}
 
-	public Object getType(Object value) {
+	private Object getType(Object value) {
 		return getType(value, null);
 	}
 
-	public Object getType(Object value, Annotation annotation) {
+	private Object getType(Object value, Annotation annotation) {
 		if (value == null) return null;
 		Class clz = value.getClass();
 

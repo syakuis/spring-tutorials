@@ -2,7 +2,7 @@ package org.syaku.tutorials.reflection.test.test;
 
 import lombok.Data;
 import lombok.ToString;
-import org.syaku.tutorials.spring.xss.support.FilterXss;
+import org.syaku.tutorials.spring.xss.support.Defence;
 
 import java.util.List;
 import java.util.Map;
@@ -15,16 +15,16 @@ import java.util.Map;
 @ToString
 @Data
 public class Foo {
-	@FilterXss
+	@Defence
 	private List<String> lists;
 
-	@FilterXss
+	@Defence
 	private List<Too> toos;
 
-	@FilterXss
+	@Defence
 	private Too too;
 
-	@FilterXss
+	@Defence
 	private Map<String, String> map;
 
 	public void putMap(String name, String value) {

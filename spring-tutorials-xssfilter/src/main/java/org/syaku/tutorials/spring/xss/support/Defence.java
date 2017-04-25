@@ -15,6 +15,6 @@ import java.lang.annotation.Target;
 		ElementType.PARAMETER
 })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FilterXss {
+public @interface Defence {
 	XssType value() default XssType.SAX;
 }

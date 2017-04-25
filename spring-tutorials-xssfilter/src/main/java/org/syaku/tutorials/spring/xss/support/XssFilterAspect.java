@@ -47,7 +47,7 @@ public class XssFilterAspect {
 	@Autowired
 	private XssFilter xssFilter;
 
-	@Before("execution(public * *(.., @org.syaku.tutorials.spring.xss.support.FilterXss (*))) || execution(* *(@org.syaku.tutorials.spring.xss.support.FilterXss (*), ..)) || execution(* *(.., @org.syaku.tutorials.spring.xss.support.FilterXss (*), ..))")
+	@Before("execution(public * *(.., @org.syaku.tutorials.spring.xss.support.Defence (*))) || execution(* *(@org.syaku.tutorials.spring.xss.support.Defence (*), ..)) || execution(* *(.., @org.syaku.tutorials.spring.xss.support.Defence (*), ..))")
 	public void xssFilter(JoinPoint point) throws InstantiationException, IllegalAccessException {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		Method method = signature.getMethod();

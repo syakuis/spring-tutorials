@@ -4,12 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.syaku.tutorials.spring.xss.domain.Foo;
-import org.syaku.tutorials.spring.xss.support.FilterXss;
+import org.syaku.tutorials.spring.xss.support.Defence;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -21,9 +18,13 @@ import org.syaku.tutorials.spring.xss.support.FilterXss;
 public class XssContoller {
 	private static final Logger logger = LoggerFactory.getLogger(XssContoller.class);
 
-	@GetMapping(value = "")
+	@GetMapping(value = "/{module_id}")
 	@ResponseBody
-	public Foo demo(@FilterXss Foo foo, Model model, @RequestParam(value = "text", required = false) @FilterXss String text) {
+	public Foo demo(
+			//@PathVariable("module_id") String module_id,
+			@Defence Foo foo, Model model,
+			@RequestParam(value = "text", required = false)
+			@Defence String text) {
 		logger.debug("Controller text {}", text);
 		logger.debug("Controller foo {}", foo.getEscape());
 		return foo;

@@ -84,7 +84,7 @@ public class XssContollerTest {
 					String saxFilter = "<TABLE class=\"NHN_Layout_Main\" style=\"TABLE-LAYOUT: fixed\" cellSpacing=\"0\" cellPadding=\"0\" width=\"743\">" + "</TABLE>" + "<SPAN style=\"COLOR: #66cc99\"></SPAN>";
 
 					MvcResult result = mockMvc.perform(
-							get("/aspectj/xss?text=" + escape + "&filter=" + filter + "&escape=" + escape + "&name=" + name + "&count=" + count + "&saxFilter=" + saxFilter))
+							get("/aspectj/xss/dddd?text=" + escape + "&filter=" + filter + "&escape=" + escape + "&name=" + name + "&count=" + count + "&saxFilter=" + saxFilter))
 							.andExpect(status().isOk())
 							.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
 							//.andExpect(jsonPath("$.filter", is(XssPreventer.escape(filter).toString())))
