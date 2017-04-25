@@ -68,20 +68,18 @@ public class ObjectTest {
 				if (isWrapperType(clz)) {
 					Field field = clz.getDeclaredField("value");
 					field.setAccessible(true);
-
+/*
 					Field modifiers = field.getClass().getDeclaredField("modifiers");
 					modifiers.setAccessible(true);
 
 					modifiers.set(field, field.getModifiers() & ~Modifier.FINAL);
 					field.set(null, "1");
-
+*/
 					logger.debug("{} = {}", field.getName(), value);
 				}
 
 			}
 		}catch (NoSuchFieldException e) {
-			logger.error(e.getMessage(), e);
-		} catch (IllegalAccessException e) {
 			logger.error(e.getMessage(), e);
 		}
 

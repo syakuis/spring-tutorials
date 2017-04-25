@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Configuration
 @ComponentScan(
-		basePackages = "org.syaku.spring.tutorials",
+		basePackages = "org.syaku.tutorials",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(
 				type = FilterType.ANNOTATION,

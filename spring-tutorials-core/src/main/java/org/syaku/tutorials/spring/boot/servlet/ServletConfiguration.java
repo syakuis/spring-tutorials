@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 @EnableAspectJAutoProxy
 @EnableWebMvc
 @ComponentScan(
-		basePackages = "org.syaku.spring.tutorials",
+		basePackages = "org.syaku.tutorials",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(
 				type = FilterType.ANNOTATION,

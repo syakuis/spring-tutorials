@@ -76,7 +76,7 @@ public class MainTest {
 		//	if (value == null) return;
 
 			Collection collection = (Collection) value;
-			for(Object fieldObject : collection.toArray()) {
+			/*for(Object fieldObject : collection.toArray()) {
 				Class collectionClz = fieldObject.getClass();
 				logger.debug(collectionClz.getName());
 
@@ -88,7 +88,7 @@ public class MainTest {
 						field(object, field2);
 					}
 				}
-			}
+			}*/
 		}
 	}
 
