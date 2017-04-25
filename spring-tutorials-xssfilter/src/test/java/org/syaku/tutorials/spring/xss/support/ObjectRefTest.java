@@ -59,4 +59,9 @@ public class ObjectRefTest {
 
 		Assert.assertSame(type, type2);
 	}
+
+	@Test
+	public void collection() {
+
+	}
 }
