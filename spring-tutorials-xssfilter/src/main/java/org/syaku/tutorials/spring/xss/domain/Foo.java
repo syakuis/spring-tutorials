@@ -16,14 +16,12 @@ import java.util.List;
 @Data
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Defence(XssType.DOM)
 public class Foo {
-	@Defence(XssType.DOM)
 	private String filter;
-	@Defence(XssType.SAX)
 	private String saxFilter;
 	private String name;
 	private int count;
-	@Defence(XssType.ESCAPE)
 	private String escape;
 	@Defence(XssType.ESCAPE)
 	private List<String> lists;
