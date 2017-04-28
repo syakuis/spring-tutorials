@@ -35,7 +35,7 @@ public class ArrayListTest {
 		mapToo.put("113",  new Too());
 		foo.setMapToo(mapToo);
 
-		Foo foo2 = (Foo) ref.getType(foo);
+		Foo foo2 = (Foo) ref.getValue(foo, Foo.class);
 
 		logger.debug("foo {} {}", foo.getClass().getTypeName(), foo.toString());
 		logger.debug("foo2 {} {}", foo2.getClass().getTypeName(), foo2.toString());
@@ -54,7 +54,7 @@ public class ArrayListTest {
 		List<Set<List<String>>> list = new ArrayList<>();
 		list.add(set);
 
-		Object object = ref.getType(list);
+		Object object = ref.getValue(list, Object.class);
 
 
 
@@ -69,7 +69,7 @@ public class ArrayListTest {
 				Arrays.asList("good1", "good2", "good3", "good4")
 		);
 		logger.debug("result @{} ({}) {}", result.hashCode(), result.getClass(), result);
-		List<String> result2 = (List) ref.getType(result);
+		List<String> result2 = (List) ref.getValue(result, List.class);
 		logger.debug(" + result @{} ({}) {} // {}", result2.hashCode(), result2.getClass(), result2);
 
 
@@ -124,7 +124,7 @@ public class ArrayListTest {
 				"Array String - 4"
 		});
 
-		Foo foo2 = (Foo) ref.getType(foo);
+		Foo foo2 = ref.getValue(foo, Foo.class);
 		logger.debug(" + result @{} ({}) {} // {}", foo2.hashCode(), foo2.getClass(), foo2);
 	}
 

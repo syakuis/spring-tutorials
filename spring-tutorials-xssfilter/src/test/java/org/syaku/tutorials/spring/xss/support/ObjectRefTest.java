@@ -39,6 +39,7 @@ public class ObjectRefTest {
 		type.setANumber(number);
 		type.setNumber(number);
 		type.setStr(str);
+		type.setChild("child");
 
 		ReferenceType type2 = ref.getValue(type, ReferenceType.class);
 

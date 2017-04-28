@@ -1,9 +1,7 @@
 package org.syaku.tutorials.spring.boot.servlet;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -37,6 +36,15 @@ import java.nio.charset.StandardCharsets;
 		)
 )
 public class ServletConfiguration extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
+
+	@Autowired
+	private HttpServletRequest request;
+
+	@Bean
+	public String webRooPath() {
+		System.out.println(request.getServletPath());
+		return "";
+	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

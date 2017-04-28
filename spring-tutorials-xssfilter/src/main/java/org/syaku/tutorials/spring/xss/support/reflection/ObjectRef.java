@@ -1,5 +1,6 @@
 package org.syaku.tutorials.spring.xss.support.reflection;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,35 +138,39 @@ public class ObjectRef {
 
 	private Object getObject(Object object) throws IllegalAccessException, InstantiationException {
 		Class clz = object.getClass();
-		Field[] fields = clz.getDeclaredFields();
-		// class에 어노테이션이 있는 경우
-		Annotation annotationClz = clz.getAnnotation(this.annotation);
+
 		boolean isAnnoTypeClz = true;
-		if (annotationClz != null) {
-			isAnnoTypeClz = this.annotation.equals(annotationClz.annotationType());
+		Annotation annotationClz = null;
+
+		if (this.annotation != null) {
+			// class에 어노테이션이 있는 경우
+			annotationClz = clz.getAnnotation(this.annotation);
+			if (annotationClz != null) {
+				isAnnoTypeClz = this.annotation.equals(annotationClz.annotationType());
+			}
 		}
 
-		logger.debug("===> in Object @{} ({}) {}", object.hashCode(), clz, object);
+		logger.debug(">< >< >>> in Object @{} ({}) {}", object.hashCode(), clz, object);
 
+		final List<Field> fields = FieldUtils.getAllFieldsList(clz);
+		//Field[] fields = clz.getDeclaredFields();
 		for(Field field : fields) {
 			field.setAccessible(true);
 			Object value = field.get(object);
 			Annotation annotation = annotationClz;
 			boolean isAnnoType = isAnnoTypeClz;
 
-			if (this.annotation != null) {
-				if (annotationClz == null) {
-					annotation = field.getAnnotation(this.annotation);
-					if (annotation != null) {
-						isAnnoType = this.annotation.equals(annotation.annotationType());
-					}
+			if (this.annotation != null && annotationClz == null) {
+				annotation = field.getAnnotation(this.annotation);
+				if (annotation != null) {
+					isAnnoType = this.annotation.equals(annotation.annotationType());
 				}
 			}
 
 			// annotation 조건이 있는 경우
 			if (value != null && isAnnoType) {
 				Object result = getType(value, annotation);
-				logger.debug("========= searching Object field @{} isAnnoType: {}, value: {}, result: {}", object.hashCode(), isAnnoType, value, result);
+				logger.debug(">< >< === changing Object field @{} {} isAnnoType: {}, value: {}, result: {}", object.hashCode(), field.getName(), isAnnoType, value, result);
 
 				// primitive type 은 null 넣을 수 없다.
 				if (result == null) {
@@ -176,7 +181,7 @@ public class ObjectRef {
 			}
 		}
 
-		logger.debug("<=== out Object @{} ({}) {}", object.hashCode(), clz, object);
+		logger.debug(">< >< <<< out Object @{} ({}) {}", object.hashCode(), clz, object);
 		return object;
 	}
 
