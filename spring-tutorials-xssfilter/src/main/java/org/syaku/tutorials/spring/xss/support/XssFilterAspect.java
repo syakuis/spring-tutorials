@@ -5,6 +5,7 @@ import com.nhncorp.lucy.security.xss.XssSaxFilter;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +48,14 @@ public class XssFilterAspect {
 	@Autowired
 	private XssFilter xssFilter;
 
-	@Before("execution(public * *(.., @org.syaku.tutorials.spring.xss.support.Defence (*))) || execution(* *(@org.syaku.tutorials.spring.xss.support.Defence (*), ..)) || execution(* *(.., @org.syaku.tutorials.spring.xss.support.Defence (*), ..))")
+	@Pointcut("within(org.syaku.tutorials.spring.xss.web.*) && @target(org.springframework.stereotype.Controller)")
+	public void porintTarget() {
+		logger.debug(">< >< invoke aspectj");
+	}
+
+	@Before("porintTarget() && (execution(public * *(.., @org.syaku.tutorials.spring.xss.support.Defence (*))) || execution(public * *(@org.syaku.tutorials.spring.xss.support.Defence (*), ..)) || execution(public * *(.., @org.syaku.tutorials.spring.xss.support.Defence (*), ..)))")
 	public void xssFilter(JoinPoint point) throws InstantiationException, IllegalAccessException {
+		logger.debug(">< >< invoke aspectj");
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		Method method = signature.getMethod();
 		Object[] args =  point.getArgs();

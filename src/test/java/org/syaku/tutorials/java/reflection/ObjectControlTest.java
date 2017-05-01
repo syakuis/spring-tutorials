@@ -34,10 +34,10 @@ public class ObjectControlTest {
 	public void fooTest() throws InstantiationException, IllegalAccessException {
 		Foo foo = new Foo();
 
-		Foo foo1 = (Foo) ref.getType(foo);
+		Foo foo1 = (Foo) ref.getValue(foo, Foo.class);
 		logger.debug("success {}", foo1);
 
-		Foo foo11 = (Foo) ref2.getType(foo);
+		Foo foo11 = (Foo) ref2.getValue(foo, Foo.class);
 		logger.debug("success {}", foo11);
 
 		foo.setName("syaku");
@@ -62,10 +62,10 @@ public class ObjectControlTest {
 		logger.debug("foo {}", foo.getTooList());
 		logger.debug("foo {}", foo.getTooListMap());
 
-		Foo foo2 = (Foo) ref.getType(foo);
+		Foo foo2 = (Foo) ref.getValue(foo, Foo.class);
 		logger.debug("success foo2 {}", foo2);
 
-		Foo foo22 = (Foo) ref2.getType(foo);
+		Foo foo22 = (Foo) ref2.getValue(foo, Foo.class);
 		logger.debug("success foo22 {}", foo22);
 		logger.debug("success foo {}", foo);
 

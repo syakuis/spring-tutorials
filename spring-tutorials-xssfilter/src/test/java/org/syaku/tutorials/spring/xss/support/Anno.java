@@ -8,6 +8,10 @@ import java.lang.annotation.Target;
  * @site http://syaku.tistory.com
  * @since 2017. 4. 25.
  */
-@Target(ElementType.FIELD)
+@Target({
+		ElementType.TYPE,
+		ElementType.FIELD,
+		ElementType.PARAMETER
+})
 public @interface Anno {
 }

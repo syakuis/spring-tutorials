@@ -6,6 +6,7 @@ import com.nhncorp.lucy.security.xss.XssSaxFilter;
 import org.jmock.lib.concurrent.Blitzer;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -71,8 +72,35 @@ public class XssContollerTest {
 	private synchronized int counting() {
 		return count++;
 	}
+
 	@Test
-	public void demo() throws Exception {
+	public void test() throws Exception {
+		String name = Thread.currentThread().getName();
+		String escape = "\"><script>alert('xss_"+ count +"');</script>";
+		String filter = "<img src=\"<img src=1\\ onerror=alert(1234)>\" onerror=\"alert('XSS')\">";
+		String saxFilter = "<TABLE class=\"NHN_Layout_Main\" style=\"TABLE-LAYOUT: fixed\" cellSpacing=\"0\" cellPadding=\"0\" width=\"743\">" + "</TABLE>" + "<SPAN style=\"COLOR: #66cc99\"></SPAN>";
+
+		MvcResult result = mockMvc.perform(
+				get("/aspectj/xss/dddd?text=" + escape + "&filter=" + filter + "&escape=" + escape + "&name=" + name + "&count=" + count + "&saxFilter=" + saxFilter))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+				//.andExpect(jsonPath("$.filter", is(XssPreventer.escape(filter).toString())))
+				//.andExpect(jsonPath("$.noFilter", is(filter)))
+				//.andExpect(jsonPath("$.name", is(name)))
+				//.andExpect(jsonPath("$.count", is(count)))
+				.andReturn();
+
+		logger.debug("{} ==> test response {} ===> {}", name, result.getResponse().getStatus(), result.getResponse().getContentAsString());
+
+		logger.debug("name {}", name);
+		logger.debug("escape {}", XssPreventer.escape(escape));
+		logger.debug("filter {}", xssFilter.doFilter(filter));
+		logger.debug("saxFilter {}", xssSaxFilter.doFilter(saxFilter));
+	}
+
+	@Test
+	@Ignore
+	public void concurrent() throws Exception {
 		blitzer.blitz(new Runnable() {
 			public void run() {
 				c.getAndIncrement();

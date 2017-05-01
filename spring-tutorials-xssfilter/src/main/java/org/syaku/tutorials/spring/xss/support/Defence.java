@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  * @since 2017. 4. 13.
  */
 @Target({
+		ElementType.TYPE,
 		ElementType.FIELD,
 		ElementType.PARAMETER
 })

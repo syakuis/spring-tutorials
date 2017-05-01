@@ -1,5 +1,6 @@
 package org.syaku.tutorials.spring.xss.support.reflection;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,19 +55,18 @@ public class ObjectRef {
 	 * @param args   the args
 	 */
 	public void getMethodParameter(Method method, Object[] args) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("MethodName {}, Parameters {}, Annotation", method.getName(), Arrays.asList(args).toString(), this.annotation);
+		}
 		// v1.7
 		int i = 0;
 		Annotation[][] methodAnnotations = method.getParameterAnnotations();
 		for (Annotation[] annotations : methodAnnotations) {
 			for (Annotation annotation : annotations) {
-				logger.debug("Method anno {}", annotation);
-				logger.debug("Method anno {}", this.annotation);
 				if (annotation != null && this.annotation.equals(annotation.annotationType())) {
-					logger.debug("Method parameter before value {}", args[i]);
 					// 배열은 reflection array 사용해야 데이터를 변경할 수 있다.
 					// args[i] = getType(args[i], annotation);
 					Array.set(args, i, getType(args[i], annotation));
-					logger.debug("Method parameter after value {}", args[i]);
 				}
 			}
 			i++;
@@ -117,7 +117,6 @@ public class ObjectRef {
 
 		try {
 			if (isWrapperType(clz) || clz == String.class) {
-				logger.debug("Object Type {}, Annotation {}", clz.getName(), annotation);
 				return converter.value(value, annotation);
 			} else if (clz.isArray()) {
 				return getArray(value);
@@ -139,36 +138,39 @@ public class ObjectRef {
 
 	private Object getObject(Object object) throws IllegalAccessException, InstantiationException {
 		Class clz = object.getClass();
-		Field[] fields = clz.getDeclaredFields();
 
-		logger.debug("in > {} ({}) {}", clz.getComponentType(), clz.getTypeName(), object.hashCode());
+		boolean isAnnoTypeClz = true;
+		Annotation annotationClz = null;
 
+		if (this.annotation != null) {
+			// class에 어노테이션이 있는 경우
+			annotationClz = clz.getAnnotation(this.annotation);
+			if (annotationClz != null) {
+				isAnnoTypeClz = this.annotation.equals(annotationClz.annotationType());
+			}
+		}
+
+		logger.debug(">< >< >>> in Object @{} ({}) {}", object.hashCode(), clz, object);
+
+		final List<Field> fields = FieldUtils.getAllFieldsList(clz);
+		//Field[] fields = clz.getDeclaredFields();
 		for(Field field : fields) {
 			field.setAccessible(true);
 			Object value = field.get(object);
-			Annotation annotation = null;
-			boolean isAnnoType = true;
+			Annotation annotation = annotationClz;
+			boolean isAnnoType = isAnnoTypeClz;
 
-			if (this.annotation != null) {
+			if (this.annotation != null && annotationClz == null) {
 				annotation = field.getAnnotation(this.annotation);
-				if (annotation != null && this.annotation.equals(annotation.annotationType())) {
+				if (annotation != null) {
 					isAnnoType = this.annotation.equals(annotation.annotationType());
-
-					if (logger.isDebugEnabled()) {
-						logger.debug("Field Annotation {} :: {} = {} equals {}",
-								field.getName(),
-								isAnnoType,
-								this.annotation,
-								annotation.annotationType()
-						);
-					}
 				}
 			}
 
 			// annotation 조건이 있는 경우
 			if (value != null && isAnnoType) {
 				Object result = getType(value, annotation);
-				logger.debug("change > anno: {}, value: {}, result: {}", isAnnoType, value, result);
+				logger.debug(">< >< === changing Object field @{} {} isAnnoType: {}, value: {}, result: {}", object.hashCode(), field.getName(), isAnnoType, value, result);
 
 				// primitive type 은 null 넣을 수 없다.
 				if (result == null) {
@@ -179,8 +181,7 @@ public class ObjectRef {
 			}
 		}
 
-		logger.debug("out > @{} {}", object.hashCode(), object.getClass().getTypeName());
-
+		logger.debug(">< >< <<< out Object @{} ({}) {}", object.hashCode(), clz, object);
 		return object;
 	}
 

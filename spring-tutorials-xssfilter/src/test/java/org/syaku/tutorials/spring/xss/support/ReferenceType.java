@@ -10,7 +10,7 @@ import lombok.ToString;
  */
 @ToString
 @Data
-public class ReferenceType {
+public class ReferenceType extends ChildReferenceType {
 	private String str;
 
 	private Integer aNumber;
