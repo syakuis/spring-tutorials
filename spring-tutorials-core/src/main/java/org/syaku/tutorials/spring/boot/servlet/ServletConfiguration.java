@@ -39,7 +39,7 @@ public class ServletConfiguration extends WebMvcConfigurerAdapter implements Web
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/resources").setCachePeriod(0);
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(0);
 	}
 
 	// 확장자에 따른 미디어타입을 설정한다.

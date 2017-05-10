@@ -1,3 +1,6 @@
+group 'org.syaku.tutorials'
+version '1.0.0'
+
 dependencies {
     compile project(':spring-tutorials-core')
 
@@ -6,5 +9,4 @@ dependencies {
 
 jar {
     baseName = 'spring-tutorials-xssfilter'
-    version = "${tutorialsVersion}"
 }

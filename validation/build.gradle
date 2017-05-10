@@ -1,0 +1,14 @@
+group 'org.syaku.tutorials'
+version '1.0.0'
+
+apply plugin: 'war'
+
+dependencies {
+	compile project(':spring-tutorials-core')
+
+	compile "org.hibernate:hibernate-validator:5.2.4.Final"
+
+	providedCompile 'javax.servlet:javax.servlet-api:3.0.1',
+			'javax.servlet.jsp:jsp-api:2.1',
+			'javax.el:javax.el-api:2.2.4'
+}

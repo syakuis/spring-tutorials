@@ -2,4 +2,5 @@ rootProject.name = 'spring-tutorials'
 include 'spring-tutorials-core'
 include 'spring-tutorials-xssfilter'
 include 'effective'
+include 'validation'
 

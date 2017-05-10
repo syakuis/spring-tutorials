@@ -1,4 +1,6 @@
+group 'org.syaku.tutorials'
+version '1.0.0'
+
 jar {
     baseName = 'effective'
-    version = "${tutorialsVersion}"
 }

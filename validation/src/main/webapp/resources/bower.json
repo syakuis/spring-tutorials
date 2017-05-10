@@ -1,0 +1,18 @@
+{
+  "name": "spring-validation",
+  "authors": [
+    "syaku"
+  ],
+  "description": "spring validation",
+  "main": "index.js",
+  "license": "MIT",
+  "homepage": "http://syaku.tistory.com",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "jquery-validation": "^1.16.0",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "fontawesome#^4.7.0",
+    "syaku-jmodal": "*",
+    "jquery.serializeJSON": "^2.8.1"
+  }
+}
