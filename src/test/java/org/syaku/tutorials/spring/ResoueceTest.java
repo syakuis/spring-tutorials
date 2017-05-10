@@ -21,11 +21,9 @@ import org.syaku.tutorials.spring.boot.servlet.ServletConfiguration;
 		ServletConfiguration.class
 })
 public class ResoueceTest {
-
-	@Autowired private String webRooPath;
-
 	@Test
 	public void test() {
-		System.out.println(webRooPath);
+		System.out.println("good");
+		System.out.println("good");
 	}
 }

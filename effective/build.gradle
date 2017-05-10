@@ -1,0 +1,4 @@
+jar {
+    baseName = 'effective'
+    version = "${tutorialsVersion}"
+}

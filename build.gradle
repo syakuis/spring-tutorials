@@ -73,37 +73,6 @@ configure(allprojects) {
     }
 }
 
-
-project(':spring-tutorials-core') {
-    jar {
-        baseName = 'spring-tutorials-core'
-        version = "${tutorialsVersion}"
-    }
-}
-
-project(':spring-tutorials-xssfilter') {
-    dependencies {
-        compile project(':spring-tutorials-core')
-
-        compile 'com.navercorp.lucy:lucy-xss:1.6.3'
-    }
-
-    jar {
-        baseName = 'spring-tutorials-xssfilter'
-        version = "${tutorialsVersion}"
-    }
-}
-
-project(':effective') {
-    dependencies {
-    }
-
-    jar {
-        baseName = 'effective'
-        version = "${tutorialsVersion}"
-    }
-}
-
 configure(rootProject) {
     apply plugin: 'war'
 

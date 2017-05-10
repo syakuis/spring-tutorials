@@ -1,0 +1,4 @@
+jar {
+    baseName = 'spring-tutorials-core'
+    version = "${tutorialsVersion}"
+}
