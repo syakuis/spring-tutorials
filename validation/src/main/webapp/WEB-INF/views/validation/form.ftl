@@ -16,27 +16,27 @@
 
 <div class="container">
 
-	<form action="validation" method="post" role="form">
+	<form name="form" action="<@spring.url "/validation/save" />" method="post" role="form">
 		<legend>유효성 검사 양식</legend>
 
 		<div class="form-group">
 			<label for="name">이름</label>
-			<input type="text" class="form-control" name="name" id="name" placeholder="">
+			<input type="text" class="form-control" data-toggle="valid" name="name" id="name" placeholder="">
 		</div>
 
 		<div class="form-group">
 			<label for="age">나이</label>
-			<input type="text" class="form-control" name="age" id="age" placeholder="">
+			<input type="number" class="form-control" data-toggle="valid" name="age" id="age" placeholder="">
 		</div>
 
 		<div class="form-group">
 			<label for="sex">성별</label>
 			<div class="radio">
 				<label for="sex_male">
-					<input type="radio" name="sex" id="sex_male" value="M" checked="checked"> 남성
+					<input type="radio" data-toggle="valid" name="sex" id="sex_male" value="M" checked="checked"> 남성
 				</label>
 				<label for="sex_female">
-					<input type="radio" name="sex" id="sex_female" value="F" checked="checked"> 여성
+					<input type="radio" data-toggle="valid" name="sex" id="sex_female" value="F" checked="checked"> 여성
 				</label>
 			</div>
 		</div>
@@ -45,18 +45,27 @@
 	</form>
 </div>
 
-
-
-
-
-
-
-<script src="<@spring.url "/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/jquery.serializeJSON/jquery.serializejson.min.js" />"></script>
+<script src="<@spring.url "/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 
 <script src="<@spring.url "/resources/bower_components/jquery-validation/dist/jquery.validate.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/jquery-validation/dist/additional-methods.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/syaku-jmodal/dist/jquery.syaku.modal.min.js" />"></script>
+
+<#if errors??>
+<script type="application/javascript">
+	$(function() {
+		<#list errors as error>
+			$('#${error.field}').tooltip({
+				title: "${error.message}",
+				delay: { "show": 500, "hide": 100 }
+			});
+		</#list>
+
+		$('[data-toggle="valid"]').tooltip('show');
+	});
+</script>
+</#if>
 </body>
 </html>

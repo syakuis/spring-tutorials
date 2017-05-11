@@ -6,14 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.syaku.tutorials.spring.apps.validation.model.Form;
-import org.syaku.tutorials.spring.apps.validation.support.SuccessHandler;
-
-import javax.validation.Valid;
+import org.syaku.tutorials.spring.apps.validation.support.ValidationBindingResult;
+import org.syaku.tutorials.spring.apps.validation.support.policy.Add;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -30,11 +30,13 @@ public class FormController {
 		return "validation/form";
 	}
 
-	@PostMapping(produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String procFormSave(Model model,  @Valid Form form, BindingResult bindingResult) {
+	@PostMapping(value = "/save", produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	public String procFormSave(Model model, @ModelAttribute("form")  Form form, BindingResult bindingResult) {
+
+		logger.debug(form.toString());
 
 		if (bindingResult.hasErrors()) {
-			logger.debug(bindingResult.toString());
+			model.addAttribute("errors", new ValidationBindingResult(bindingResult).getFieldErrors());
 			return "validation/form";
 		}
 
