@@ -3,10 +3,8 @@ package org.syaku.tutorials.java.reflection.object;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.syaku.tutorials.java.reflection.method.MethodTest;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ import java.util.List;
  * @since 2017. 4. 21.
  */
 public class ObjectTest {
-	private static final Logger logger = LoggerFactory.getLogger(MethodTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ObjectTest.class);
 
 	@Test
 	public void list() throws NoSuchMethodException {
@@ -61,7 +59,7 @@ public class ObjectTest {
 
 		try {
 			for (T value : list) {
-				logger.debug("{}", value.getClass().getTypeName());
+				logger.debug("{}", value.getClass().getName());
 				Class<?> clz = value.getClass();
 
 				// 자료형인 경우에만

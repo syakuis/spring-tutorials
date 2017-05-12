@@ -110,7 +110,7 @@ public class MainTest {
 
 				if (genericType instanceof ParameterizedType) {
 					ParameterizedType pType = (ParameterizedType) genericType;
-					logger.debug("{} {} {}", valueClz.getTypeName(), field.getType(), pType.getOwnerType());
+					logger.debug("{} {} {}", valueClz.getName(), field.getType(), pType.getOwnerType());
 					System.out.print("Raw type: " + Collection.class.isAssignableFrom(field.getType()));
 					System.out.println("Type args: " + pType.getActualTypeArguments()[0]);
 					getGeneric(value);

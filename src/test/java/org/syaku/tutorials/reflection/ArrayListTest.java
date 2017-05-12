@@ -37,8 +37,8 @@ public class ArrayListTest {
 
 		Foo foo2 = (Foo) ref.getValue(foo, Foo.class);
 
-		logger.debug("foo {} {}", foo.getClass().getTypeName(), foo.toString());
-		logger.debug("foo2 {} {}", foo2.getClass().getTypeName(), foo2.toString());
+		logger.debug("foo {} {}", foo.getClass().getName(), foo.toString());
+		logger.debug("foo2 {} {}", foo2.getClass().getName(), foo2.toString());
 	}
 
 	public void listTest() throws InstantiationException, IllegalAccessException {
@@ -59,7 +59,7 @@ public class ArrayListTest {
 
 
 		logger.debug("{}", object);
-		logger.debug("{}", object.getClass().getTypeName());
+		logger.debug("{}", object.getClass().getName());
 
 	}
 
