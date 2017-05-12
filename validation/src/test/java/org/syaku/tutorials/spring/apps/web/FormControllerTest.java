@@ -63,15 +63,24 @@ public class FormControllerTest {
 	}
 
 	@Test
-	public void dispFormSave() throws Exception {
+	public void get_form() throws Exception {
 		mockMvc.perform(get("/validation"))
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
 
 	@Test
-	public void prodFormSave() throws Exception {
-		mockMvc.perform(post("/validation/save").param("age", ""))
+	public void post_form_valid() throws Exception {
+		mockMvc.perform(post("/validation/save")
+				.param("password", "1")
+				.param("password2", "12")
+				.param("age", "")
+				.param("name", "1")
+				.param("userId", "1")
+				.param("birthday", "1999-12-20")
+				.param("sex", "S")
+				.param("hobby", "영화", "게임")
+		)
 				.andDo(print())
 				.andExpect(status().isOk());
 	}

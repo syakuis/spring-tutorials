@@ -31,7 +31,7 @@ public class FormController {
 	}
 
 	@PostMapping(value = "/save", produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public String procFormSave(Model model, @ModelAttribute("form")  Form form, BindingResult bindingResult) {
+	public String procFormSave(Model model, @Validated Form form, BindingResult bindingResult) {
 
 		logger.debug(form.toString());
 
