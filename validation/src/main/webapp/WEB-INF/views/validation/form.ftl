@@ -90,6 +90,11 @@
 			</div>
 		</div>
 
+	<div>
+		<p class="lead">추가</p>
+
+	</div>
+
 		<button type="submit" class="btn btn-primary">전송</button>
 	</form>
 </div>
@@ -106,7 +111,7 @@
 <script type="application/javascript">
 	$(function() {
 		<#list errors as error>
-			$('#${error.field}').tooltip({
+			$('#' + '${error.field}'.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).tooltip({
 				title: "${error.message}",
 				delay: { "show": 500, "hide": 100 }
 			});

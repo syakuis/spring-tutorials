@@ -5,11 +5,14 @@ import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.syaku.tutorials.spring.apps.validation.support.policy.Edit;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -38,7 +41,7 @@ public class Form {
 	@Length(max = 50)
 	private String name;
 
-	@NotNull @Min(1) @Max(200)
+	@NotNull @Range(min = 1, max = 200)
 	private Integer age;
 
 	@NotEmpty
@@ -71,4 +74,8 @@ public class Form {
 
 		return this.password.equals(this.password2);
 	}
+
+	@Valid
+	@NotNull
+	List<FormExt> formExts;
 }
