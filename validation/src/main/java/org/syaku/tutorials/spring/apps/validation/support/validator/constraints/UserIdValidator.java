@@ -5,13 +5,15 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.syaku.tutorials.spring.apps.validation.support.validator.constraints.UserId.RegexType;
+
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 5. 15.
  */
 public class UserIdValidator implements ConstraintValidator<UserId, String> {
-	private UserIdRegexType regexType;
+	private RegexType regexType;
 	private String message;
 
 	@Override
@@ -23,19 +25,19 @@ public class UserIdValidator implements ConstraintValidator<UserId, String> {
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		if (value == null || "".equals(value)) {
-			return false;
+			return true;
 		}
 
 		String expression;
 		String message;
 
-		if (regexType.equals(UserIdRegexType.ALPHABET_NUMBER_UNDERSCORE)) {
+		if (regexType.equals(RegexType.ALPHABET_NUMBER_UNDERSCORE)) {
 			expression = "(^[a-z][a-z0-9_]+)";
 			message = "{text.valid.UserId.ALPHABET_NUMBER_UNDERSCORE}";
-		} else if (regexType.equals(UserIdRegexType.ALPHABET_NUMBER)) {
+		} else if (regexType.equals(RegexType.ALPHABET_NUMBER)) {
 			expression = "(^[a-z][a-z0-9]+)";
 			message = "{text.valid.UserId.ALPHABET_NUMBER}";
-		} else if (regexType.equals(UserIdRegexType.NUMBER)) {
+		} else if (regexType.equals(RegexType.NUMBER)) {
 			expression = "([0-9]+)";
 			message = "{text.valid.UserId.NUMBER}";
 		} else {

@@ -70,13 +70,31 @@ public class FormControllerTest {
 	}
 
 	@Test
-	public void post_form_valid() throws Exception {
+	public void post_form_valid_error() throws Exception {
 		mockMvc.perform(post("/validation/save")
-				.param("password", "1")
+				.param("password", "13213213213123213213")
 				.param("password2", "12")
 				.param("age", "w")
 				.param("name", "1")
-				.param("userId", "_ewqewq21")
+				.param("userId", "Ywewqe221321321321321321321321321")
+				.param("date", "20170431222222")
+				.param("birthday", "1999-12-20")
+				.param("sex", "X")
+				.param("hobby", "영화", "게임", "게임", "게임")
+		)
+				.andDo(print())
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void post_form_valid() throws Exception {
+		mockMvc.perform(post("/validation/save")
+				.param("password", "1234")
+				.param("password2", "1234")
+				.param("age", "20")
+				.param("name", "1")
+				.param("userId", "wqe2")
+				.param("date", "20170430222222")
 				.param("birthday", "1999-12-20")
 				.param("sex", "S")
 				.param("hobby", "영화", "게임")

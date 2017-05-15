@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class ErrorResult {
 	private final String field;
+	private final String fieldName;
 	private final Object value;
 	private final String code;
 	private final String message;

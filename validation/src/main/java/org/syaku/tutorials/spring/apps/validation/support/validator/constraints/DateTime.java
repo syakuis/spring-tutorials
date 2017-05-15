@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -18,23 +19,23 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = UserIdValidator.class)
+@Constraint(validatedBy = DateTimeValidator.class)
 @NotEmpty
 @Documented
-public @interface UserId {
+public @interface DateTime {
 	/**
 	 * default {text.valid.UserId.ALPHABET_NUMBER_UNDERSCORE}
 	 * @return
 	 */
-	String message() default "";
+	String message() default "{text.valid.DateTime}";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	RegexType value() default RegexType.ALPHABET_NUMBER_UNDERSCORE;
-
-	enum RegexType {
-		ALPHABET_NUMBER_UNDERSCORE, ALPHABET_NUMBER, NUMBER, EMAIL
-	}
+	/**
+	 * dateTime yyyy-MM-dd HH:mm:ss
+	 * @return
+	 */
+	String format() default "yyyy-MM-dd";
 }

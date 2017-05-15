@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ import org.syaku.tutorials.spring.apps.validation.support.ValidationBindingResul
 public class FormController {
 	private static final Logger logger = LoggerFactory.getLogger(FormController.class);
 
-	@Autowired private MessageSource messageSource;
+	@Autowired private MessageSourceAccessor messageSource;
 
 	@GetMapping
 	public String dispFromSave() {

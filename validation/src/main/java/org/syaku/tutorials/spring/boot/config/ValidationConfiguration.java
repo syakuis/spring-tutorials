@@ -3,6 +3,7 @@ package org.syaku.tutorials.spring.boot.config;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -24,6 +25,11 @@ public class ValidationConfiguration {
 		this.messageSource = messageSource;
 
 		return messageSource;
+	}
+
+	@Bean
+	public MessageSourceAccessor messageSourceAccessor() {
+		return new MessageSourceAccessor(messageSource);
 	}
 
 	@Bean

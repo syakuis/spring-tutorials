@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.syaku.tutorials.spring.apps.validation.support.validator.constraints.DateTime;
 import org.syaku.tutorials.spring.apps.validation.support.validator.constraints.UserId;
 import org.syaku.tutorials.spring.apps.validation.support.validator.group.Edit;
 
@@ -55,6 +56,9 @@ public class Form {
 	@Past
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
+
+	@DateTime(format = "yyyyMMddHHssmm")
+	private String date;
 
 	private String phone;
 
