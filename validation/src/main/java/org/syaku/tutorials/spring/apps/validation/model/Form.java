@@ -7,10 +7,14 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.syaku.tutorials.spring.apps.validation.support.policy.Edit;
+import org.syaku.tutorials.spring.apps.validation.support.validator.constraints.UserId;
+import org.syaku.tutorials.spring.apps.validation.support.validator.group.Edit;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +29,8 @@ public class Form {
 	@NotEmpty(groups = Edit.class)
 	private String idx;
 
-	@NotEmpty
 	@Length(max = 50)
+	@UserId
 	private String userId;
 
 	@NotEmpty
@@ -61,8 +65,11 @@ public class Form {
 	@Size(min = 1, max = 2)
 	private String[] hobby;
 
-	@AssertTrue(message = "유요한 값이 아닙니다.")
+	@AssertTrue(message = "{text.valid.Invalid}")
 	private boolean isSexFixed() {
+		if (this.sex == null) {
+			return true;
+		}
 		return "F,M".indexOf(this.sex) > -1;
 	}
 

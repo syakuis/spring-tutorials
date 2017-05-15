@@ -16,9 +16,8 @@ import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 import org.springframework.web.context.WebApplicationContext;
 import org.syaku.tutorials.spring.apps.validation.model.Form;
-import org.syaku.tutorials.spring.apps.validation.support.policy.Edit;
 import org.syaku.tutorials.spring.boot.Bootstrap;
-import org.syaku.tutorials.spring.boot.servlet.ServletConfiguration;
+import org.syaku.tutorials.spring.boot.servlet.ValidationServlet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 @ContextConfiguration(classes = {
 		Bootstrap.class,
-		ServletConfiguration.class
+		ValidationServlet.class
 })
 public class FormControllerTest {
 	private static final Logger logger = LoggerFactory.getLogger(FormControllerTest.class);
@@ -59,7 +58,8 @@ public class FormControllerTest {
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult result = binder.getBindingResult();
-		logger.debug(result.toString());
+
+		logger.debug("{}", result);
 	}
 
 	@Test
@@ -74,9 +74,9 @@ public class FormControllerTest {
 		mockMvc.perform(post("/validation/save")
 				.param("password", "1")
 				.param("password2", "12")
-				.param("age", "")
+				.param("age", "w")
 				.param("name", "1")
-				.param("userId", "1")
+				.param("userId", "_ewqewq21")
 				.param("birthday", "1999-12-20")
 				.param("sex", "S")
 				.param("hobby", "영화", "게임")

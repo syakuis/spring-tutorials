@@ -1,7 +1,9 @@
 package org.syaku.tutorials.spring.boot.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -12,9 +14,23 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  */
 @Configuration
 public class ValidationConfiguration {
-/*
+	private MessageSource messageSource;
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:org/syaku/tutorials/spring/i18n/message");
+
+		this.messageSource = messageSource;
+
+		return messageSource;
+	}
+
 	@Bean
 	public Validator validator() {
-		return new LocalValidatorFactoryBean();
-	}*/
+		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+		validator.setValidationMessageSource(messageSource);
+		validator.afterPropertiesSet();
+		return validator;
+	}
 }

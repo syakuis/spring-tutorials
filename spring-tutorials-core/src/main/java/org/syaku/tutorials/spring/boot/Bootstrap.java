@@ -13,7 +13,7 @@ import org.springframework.context.annotation.FilterType;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(
-		basePackages = "org.syaku.tutorials.spring.boot.config",
+		basePackages = "org.syaku.tutorials.spring.boot.config.**",
 		useDefaultFilters = false,
 		includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class)
 )
