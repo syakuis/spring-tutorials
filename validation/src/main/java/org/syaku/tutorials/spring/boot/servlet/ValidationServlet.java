@@ -1,10 +1,7 @@
 package org.syaku.tutorials.spring.boot.servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+import org.syaku.tutorials.spring.apps.validation.support.RequestBodyValidationAspect;
 
 import java.nio.charset.StandardCharsets;
 

@@ -3,17 +3,16 @@ package org.syaku.tutorials.spring.apps.validation.web;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.syaku.tutorials.spring.apps.validation.model.Form;
+import org.syaku.tutorials.spring.apps.validation.support.SuccessHandler;
+import org.syaku.tutorials.spring.apps.validation.support.ValidResult;
 import org.syaku.tutorials.spring.apps.validation.support.ValidationBindingResult;
 
 /**
@@ -42,5 +41,11 @@ public class FormController {
 		}
 
 		return "validation/done";
+	}
+
+	@PostMapping(value = "/save2")
+	@ResponseBody
+	public SuccessHandler procFormSave2(@Validated @RequestBody Form form, @ValidResult BindingResult bindingResult) {
+		return new SuccessHandler("");
 	}
 }

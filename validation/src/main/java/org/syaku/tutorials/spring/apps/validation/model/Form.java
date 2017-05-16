@@ -1,5 +1,6 @@
 package org.syaku.tutorials.spring.apps.validation.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Email;
@@ -26,6 +27,7 @@ import java.util.List;
  */
 @ToString
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Form {
 	@NotEmpty(groups = Edit.class)
 	private String idx;

@@ -16,7 +16,7 @@
 
 <div class="container">
 
-	<form name="form" action="<@spring.url "/validation/save" />" method="post" role="form">
+	<form id="form" name="form" action="<@spring.url "/validation/save" />" method="post" role="form">
 		<legend>유효성 검사 양식</legend>
 		<input type="hidden" name="idx" value="">
 
@@ -95,7 +95,8 @@
 
 	</div>
 
-		<button type="submit" class="btn btn-primary">전송</button>
+		<button type="submit" class="btn btn-primary">동기</button>
+		<button type="button" class="btn btn-primary" id="async">비동기</button>
 	</form>
 </div>
 
@@ -107,19 +108,42 @@
 <script src="<@spring.url "/resources/bower_components/jquery-validation/dist/additional-methods.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/syaku-jmodal/dist/jquery.syaku.modal.min.js" />"></script>
 
-<#if errors??>
 <script type="application/javascript">
+	function showMessage(field, message) {
+		$('#' + field.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).tooltip({
+			title: message,
+			delay: { "show": 500, "hide": 100 }
+		});
+	}
 	$(function() {
-		<#list errors as error>
-			$('#' + '${error.field}'.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).tooltip({
-				title: "${error.message}",
-				delay: { "show": 500, "hide": 100 }
+		var data = $("#form :input").serializeJSON();
+
+		$('#async').click(function() {
+			$.ajax({
+				'url' : '<@spring.url "/validation/save2" />',
+				'type': 'post',
+				'dataType' : 'json',
+				'processData': false,
+				'contentType': 'application/json',
+				'data': JSON.stringify(data)
+			}).done(function(response) {
+				var errors = response.content;
+				for (var i in errors) {
+					showMessage(errors[i].field, errors[i].message);
+				}
+				$('[data-toggle="valid"]').tooltip('show');
 			});
+		});
+
+		<#if errors??>
+		<#list errors as error>
+			showMessage('${error.field}', '${error.message}');
 		</#list>
 
-		$('[data-toggle="valid"]').tooltip('show');
+			$('[data-toggle="valid"]').tooltip('show');
+		</#if>
 	});
 </script>
-</#if>
+
 </body>
 </html>
