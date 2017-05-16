@@ -1,4 +1,4 @@
-package org.syaku.tutorials.spring.apps.validation.support.validator.group;
+package org.syaku.tutorials.spring.validation.group;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)

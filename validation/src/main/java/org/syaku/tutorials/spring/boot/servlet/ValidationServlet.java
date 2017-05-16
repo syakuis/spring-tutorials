@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
-import org.syaku.tutorials.spring.apps.validation.support.RequestBodyValidationAspect;
 
 import java.nio.charset.StandardCharsets;
 

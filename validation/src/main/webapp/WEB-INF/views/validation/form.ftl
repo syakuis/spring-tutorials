@@ -120,7 +120,7 @@
 
 		$('#async').click(function() {
 			$.ajax({
-				'url' : '<@spring.url "/validation/save2" />',
+				'url' : '<@spring.url "/validation/save" />',
 				'type': 'post',
 				'dataType' : 'json',
 				'processData': false,

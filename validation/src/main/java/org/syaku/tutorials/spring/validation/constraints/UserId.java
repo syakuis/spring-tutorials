@@ -1,4 +1,4 @@
-package org.syaku.tutorials.spring.apps.validation.support.validator.constraints;
+package org.syaku.tutorials.spring.validation.constraints;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,7 +19,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = UserIdValidator.class)
-@NotEmpty
 @Documented
 public @interface UserId {
 	/**

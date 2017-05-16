@@ -11,9 +11,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.syaku.tutorials.spring.apps.validation.model.Form;
-import org.syaku.tutorials.spring.apps.validation.support.SuccessHandler;
-import org.syaku.tutorials.spring.apps.validation.support.ValidResult;
-import org.syaku.tutorials.spring.apps.validation.support.ValidationBindingResult;
+import org.syaku.tutorials.spring.apps.validation.support.AppValidationMessage;
+import org.syaku.tutorials.spring.handlers.SuccessHandler;
+import org.syaku.tutorials.spring.validation.ValidBindingResult;
+import org.syaku.tutorials.spring.validation.ValidationResult;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -32,20 +33,24 @@ public class FormController {
 		return "validation/form";
 	}
 
-	@PostMapping(value = "/save", produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public String procFormSave(Model model, @Validated Form form, BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("errors", new ValidationBindingResult(bindingResult, messageSource).getFieldErrors());
+			model.addAttribute("errors",
+					new ValidationResult(
+							bindingResult,
+							new AppValidationMessage(messageSource)
+					).getFieldErrors());
 			return "validation/form";
 		}
 
 		return "validation/done";
 	}
 
-	@PostMapping(value = "/save2")
+	@PostMapping(value = "/save")
 	@ResponseBody
-	public SuccessHandler procFormSave2(@Validated @RequestBody Form form, @ValidResult BindingResult bindingResult) {
+	public SuccessHandler procFormAsyncSave(@Validated @RequestBody Form form, @ValidBindingResult BindingResult bindingResult) {
 		return new SuccessHandler("");
 	}
 }

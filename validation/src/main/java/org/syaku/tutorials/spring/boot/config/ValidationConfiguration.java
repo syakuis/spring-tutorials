@@ -7,6 +7,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.syaku.tutorials.spring.validation.ValidationAspect;
 
 /**
  * @author Seok Kyun. Choi. 최석균 (Syaku)
@@ -16,6 +17,11 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @Configuration
 public class ValidationConfiguration {
 	private MessageSource messageSource;
+
+	@Bean
+	public ValidationAspect validationAspect() {
+		return new ValidationAspect();
+	}
 
 	@Bean
 	public MessageSource messageSource() {

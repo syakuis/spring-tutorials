@@ -8,9 +8,9 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.syaku.tutorials.spring.apps.validation.support.validator.constraints.DateTime;
-import org.syaku.tutorials.spring.apps.validation.support.validator.constraints.UserId;
-import org.syaku.tutorials.spring.apps.validation.support.validator.group.Edit;
+import org.syaku.tutorials.spring.validation.constraints.DateTime;
+import org.syaku.tutorials.spring.validation.constraints.UserId;
+import org.syaku.tutorials.spring.validation.group.Edit;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;

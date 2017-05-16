@@ -1,4 +1,4 @@
-package org.syaku.tutorials.spring.apps.validation.support;
+package org.syaku.tutorials.spring.handlers;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
