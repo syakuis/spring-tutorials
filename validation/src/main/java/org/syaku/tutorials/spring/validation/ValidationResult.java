@@ -32,10 +32,10 @@ public final class ValidationResult {
 			String field = error.getField();
 
 			// 폼에서 전송된 데이터 타입이 바인딩과정에 일치하지 않을 경우 오류 메세지가 기록된다. 이를 알기쉽게 변경하였다.
-			String message = error.isBindingFailure() ? validationMessage.getBindingFailure(error.getDefaultMessage()) : error.getDefaultMessage();
+			String message = error.isBindingFailure() ? validationMessage.getBindingFailure(error) : error.getDefaultMessage();
 			ErrorResult result = new ErrorResult(
 					field,
-					validationMessage.getFieldName(field),
+					validationMessage.getFieldName(error),
 					error.getRejectedValue(),
 					error.getCode(),
 					message

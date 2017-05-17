@@ -13,6 +13,7 @@
     "bootstrap": "^3.3.7",
     "font-awesome": "fontawesome#^4.7.0",
     "syaku-jmodal": "*",
-    "jquery.serializeJSON": "^2.8.1"
+    "jquery.serializeJSON": "^2.8.1",
+    "form2js": "https://github.com/maxatwork/form2js.git"
   }
 }

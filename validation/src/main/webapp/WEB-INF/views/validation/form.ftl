@@ -22,12 +22,12 @@
 
 		<div class="form-group">
 			<label for="userId">아이디</label>
-			<input type="text" class="form-control" data-toggle="valid" name="userId" id="userId" placeholder="">
+			<input type="text" class="form-control" data-toggle="valid" name="userId" id="userId" placeholder="" required>
 		</div>
 
 		<div class="form-group">
 			<label for="password">비밀번호</label>
-			<input type="text" class="form-control" data-toggle="valid" name="password" id="password" placeholder="">
+			<input type="text" class="form-control" data-toggle="valid" name="password" id="password" placeholder="" required>
 		</div>
 
 		<div class="form-group">
@@ -93,6 +93,36 @@
 	<div>
 		<p class="lead">추가</p>
 
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[0].name" id="formExts[0].name" placeholder="name"></div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[0].value" id="formExts[0].value" placeholder="value"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[1].name" id="formExts[1].name" placeholder="name"></div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[1].value" id="formExts[1].value" placeholder="value"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[2].name" id="formExts[2].name" placeholder="name"></div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group"><input type="text" data-toggle="valid" class="form-control" name="formExts[2].value" id="formExts[2].value" placeholder="value"></div>
+			</div>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="client_valid"> 클라이언트 유효성 검사
+			</label>
+		</div>
 	</div>
 
 		<button type="submit" class="btn btn-primary">동기</button>
@@ -102,23 +132,74 @@
 
 <script src="<@spring.url "/resources/bower_components/jquery/dist/jquery.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/jquery.serializeJSON/jquery.serializejson.min.js" />"></script>
+<script src="<@spring.url "/resources/bower_components/form2js/src/form2js.js" />"></script>
+<script src="<@spring.url "/resources/bower_components/form2js/src/js2form.js" />"></script>
+<script src="<@spring.url "/resources/bower_components/form2js/src/jquery.toObject.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/bootstrap/dist/js/bootstrap.min.js" />"></script>
 
 <script src="<@spring.url "/resources/bower_components/jquery-validation/dist/jquery.validate.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/jquery-validation/dist/additional-methods.min.js" />"></script>
 <script src="<@spring.url "/resources/bower_components/syaku-jmodal/dist/jquery.syaku.modal.min.js" />"></script>
 
-<script type="application/javascript">
-	function showMessage(field, message) {
+<script type="text/javascript">
+	$('#userId').tooltip({
+		title: "",
+		delay: { "show": 500, "hide": 100 },
+		trigger: 'manual'
+	});
+	$('[data-toggle="valid"]').tooltip('show');
+	$('[data-toggle="valid"]').tooltip('destroy');
+	$('#userId').tooltip({
+		title: "",
+		delay: { "show": 500, "hide": 100 },
+		trigger: 'manual'
+	});
+	$('[data-toggle="valid"]').tooltip('show');
+	var timerId = 0;
+
+	function showMessage() {
+		$('[data-toggle="valid"]').tooltip('show');
+
+		//if (timerId != 0) clearInterval(timerId);
+/*
+		timerId = setInterval(function() {
+			$('[data-toggle="valid"]').tooltip('destroy');
+		}, 5000);*/
+	}
+
+	function addMessage(field, message) {
 		$('#' + field.replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )).tooltip({
 			title: message,
-			delay: { "show": 500, "hide": 100 }
+			delay: { "show": 500, "hide": 100 },
+			trigger: 'manual'
 		});
 	}
 	$(function() {
-		var data = $("#form :input").serializeJSON();
+		$("#form").validate({
+			invalidHandler: function(event, validator) {
+				//validator.focusInvalid();
+			},
+			errorPlacement: function(error, element) {
+				for (var i = 0; i < error.length; i++) {
+					addMessage(element[i].id, error[i].textContent);
+				}
+			}
+		});
 
 		$('#async').click(function() {
+			var data = $("#form").toObject({
+				skipEmpty: false
+			});
+
+			if ($("#client_valid").prop("checked") === true) {
+				$('[data-toggle="valid"]').tooltip('destroy');
+
+				if (!$("#form").valid()) {
+					showMessage();
+					return;
+				}
+			}
+
 			$.ajax({
 				'url' : '<@spring.url "/validation/save" />',
 				'type': 'post',
@@ -129,9 +210,9 @@
 			}).done(function(response) {
 				var errors = response.content;
 				for (var i in errors) {
-					showMessage(errors[i].field, errors[i].message);
+					addMessage(errors[i].field, errors[i].message);
 				}
-				$('[data-toggle="valid"]').tooltip('show');
+				showMessage();
 			});
 		});
 
@@ -140,7 +221,7 @@
 			showMessage('${error.field}', '${error.message}');
 		</#list>
 
-			$('[data-toggle="valid"]').tooltip('show');
+			showMessage();
 		</#if>
 	});
 </script>

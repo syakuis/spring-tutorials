@@ -38,6 +38,12 @@ public class ValidationConfiguration {
 		return new MessageSourceAccessor(messageSource);
 	}
 
+	/**
+	 <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	 <property name="validationMessageSource" ref="messageSource" />
+	 </bean>
+	 * @return
+	 */
 	@Bean
 	public Validator validator() {
 		LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();

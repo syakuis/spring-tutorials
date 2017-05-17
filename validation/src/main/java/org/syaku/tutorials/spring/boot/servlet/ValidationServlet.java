@@ -37,6 +37,16 @@ import java.nio.charset.StandardCharsets;
 public class ValidationServlet extends WebMvcConfigurerAdapter implements WebMvcConfigurer {
 	@Autowired Validator validator;
 
+	/**
+	 <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+	 <property name="webBindingInitializer">
+	 <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+	 <property name="validator" ref="validator" />
+	 </bean>
+	 </property>
+	 </bean>
+	 * @return
+	 */
 	@Override
 	public Validator getValidator() {
 		return validator;

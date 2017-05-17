@@ -1,6 +1,7 @@
 package org.syaku.tutorials.spring.apps.validation.support;
 
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.validation.FieldError;
 import org.syaku.tutorials.spring.validation.ValidationMessage;
 
 /**
@@ -16,12 +17,12 @@ public class AppValidationMessage implements ValidationMessage {
 	}
 
 	@Override
-	public String getFieldName(String field) {
-		return messageSourceAccessor.getMessage("text.field." + field, field);
+	public String getFieldName(FieldError fieldError) {
+		return messageSourceAccessor.getMessage("text.field." + fieldError.getField(), fieldError.getField());
 	}
 
 	@Override
-	public String getBindingFailure(String message) {
-		return messageSourceAccessor.getMessage("text.valid.Invalid", message);
+	public String getBindingFailure(FieldError fieldError) {
+		return messageSourceAccessor.getMessage("text.valid.Invalid", fieldError.getDefaultMessage());
 	}
 }
