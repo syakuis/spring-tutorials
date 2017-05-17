@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = DateTimeValidator.class)
+@Constraint(validatedBy = BetweenValidator.class)
 @Documented
 public @interface Between {
 	String message() default "{text.valid.Between}";
@@ -25,9 +25,11 @@ public @interface Between {
 
 	Class<? extends Payload>[] payload() default {};
 
-	/**
-	 * dateTime yyyy-MM-dd HH:mm:ss
-	 * @return
-	 */
-	String format() default "yyyy-MM-dd";
+	String[] value() default "";
+
+	ValueSet valueSet() default ValueSet.NONE;
+
+	enum ValueSet {
+		YN, ZERO_ONE, NONE
+	}
 }

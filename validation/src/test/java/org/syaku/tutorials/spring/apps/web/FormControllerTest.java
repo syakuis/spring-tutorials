@@ -21,12 +21,10 @@ import org.syaku.tutorials.spring.apps.validation.model.Form;
 import org.syaku.tutorials.spring.boot.Bootstrap;
 import org.syaku.tutorials.spring.boot.servlet.ValidationServlet;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Date;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,51 +67,7 @@ public class FormControllerTest {
 	}
 
 	@Test
-	public void get_form() throws Exception {
-		mockMvc.perform(get("/validation"))
-				.andDo(print())
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void post_form_valid_error() throws Exception {
-		mockMvc.perform(post("/validation/save")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("password", "13213213213123213213")
-				.param("password2", "12")
-				.param("age", "w")
-				.param("name", "1")
-				.param("userId", "")
-				.param("date", "20170431222222")
-				.param("birthday", "1999-12-20")
-				.param("sex", "X")
-				.param("dates", "20170431", "20170430", "20170431", "20170430")
-				.param("hobby", "영화", "게임", "게임", "게임")
-		)
-				.andDo(print())
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void post_form_valid() throws Exception {
-		mockMvc.perform(post("/validation/save")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("password", "1234")
-				.param("password2", "1234")
-				.param("age", "20")
-				.param("name", "1")
-				.param("userId", "wqe2")
-				.param("date", "20170430222222")
-				.param("birthday", "1999-12-20")
-				.param("sex", "S")
-				.param("hobby", "영화", "게임")
-		)
-				.andDo(print())
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void post_form_valid2() throws Exception {
+	public void async_post_form_write_valid() throws Exception {
 		Form form = new Form();
 		form.setAge(20);
 		form.setBirthday(new Date());
@@ -143,10 +97,32 @@ public class FormControllerTest {
 	}
 
 	@Test
-	public void stringbytes() throws UnsupportedEncodingException{
-		String text = "국국국한韓a1";
+	public void async_post_form_edit_valid() throws Exception {
+		Form form = new Form();
+		form.setAge(20);
+		form.setBirthday(new Date());
+		form.setDate("20170430222222");
+		form.setEmail("ss");
+		form.setHobby(new String[]{ "1", "2", "3" });
+		form.setIdx("1");
+		form.setName("good");
+		form.setPassword("1234");
+		form.setPassword2("1234");
+		form.setPhone("12341234");
+		form.setSex("S");
+		form.setUserId("ewqewqe");
 
-		byte[] bytes = text.getBytes("utf-8");
-		System.out.println(bytes.length);
+		form.setFormExts(Collections.EMPTY_LIST);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+
+		mockMvc.perform(put("/validation/save")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(form))
+		)
+				.andDo(print())
+				.andExpect(status().isOk());
 	}
 }

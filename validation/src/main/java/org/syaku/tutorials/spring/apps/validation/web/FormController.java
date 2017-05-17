@@ -14,6 +14,7 @@ import org.syaku.tutorials.spring.apps.validation.model.Form;
 import org.syaku.tutorials.spring.apps.validation.support.AppValidationMessage;
 import org.syaku.tutorials.spring.handlers.SuccessHandler;
 import org.syaku.tutorials.spring.validation.ValidBindingResult;
+import org.syaku.tutorials.spring.validation.ValidationException;
 import org.syaku.tutorials.spring.validation.ValidationResult;
 
 /**
@@ -48,9 +49,19 @@ public class FormController {
 		return "validation/done";
 	}
 
+	@PutMapping(value = "/save")
+	@ResponseBody
+	public SuccessHandler procFormEdit(@Validated @RequestBody Form form, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			throw new ValidationException(bindingResult);
+		}
+		return new SuccessHandler("success");
+	}
+
 	@PostMapping(value = "/save")
 	@ResponseBody
-	public SuccessHandler procFormAsyncSave(@Validated @RequestBody Form form, @ValidBindingResult BindingResult bindingResult) {
-		return new SuccessHandler("");
+	public SuccessHandler procFormWrite(@Validated @RequestBody Form form, @ValidBindingResult BindingResult bindingResult) {
+		return new SuccessHandler("success");
 	}
 }

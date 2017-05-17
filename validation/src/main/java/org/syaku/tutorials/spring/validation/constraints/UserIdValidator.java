@@ -6,11 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * 값이 사용자 계정 패턴에 맞게 입력했는 지 판단한다.
  * @author Seok Kyun. Choi. 최석균 (Syaku)
  * @site http://syaku.tistory.com
  * @since 2017. 5. 15.
  */
-public class UserIdValidator implements ConstraintValidator<UserId, String> {
+public class UserIdValidator implements ConstraintValidator<UserId, CharSequence> {
 	private UserId.RegexType regexType;
 	private String message;
 
@@ -21,8 +22,8 @@ public class UserIdValidator implements ConstraintValidator<UserId, String> {
 	}
 
 	@Override
-	public boolean isValid(String value, ConstraintValidatorContext context) {
-		if (value == null || "".equals(value)) {
+	public boolean isValid(CharSequence value, ConstraintValidatorContext context) {
+		if (value == null || value.length() == 0) {
 			return true;
 		}
 

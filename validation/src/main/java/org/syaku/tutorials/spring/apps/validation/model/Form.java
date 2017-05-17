@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.syaku.tutorials.spring.validation.constraints.Between;
 import org.syaku.tutorials.spring.validation.constraints.DateTime;
 import org.syaku.tutorials.spring.validation.constraints.UserId;
 import org.syaku.tutorials.spring.validation.group.Edit;
@@ -52,7 +53,7 @@ public class Form {
 	private Integer age;
 
 	@NotEmpty
-	@Length(max = 1)
+	@Between({ "F", "M" })
 	private String sex;
 
 	@Past
@@ -70,14 +71,6 @@ public class Form {
 	@NotNull
 	@Size(min = 1, max = 2)
 	private String[] hobby;
-
-	@AssertTrue(message = "{text.valid.Invalid}")
-	private boolean isSexFixed() {
-		if (this.sex == null) {
-			return true;
-		}
-		return "F,M".indexOf(this.sex) > -1;
-	}
 
 	@AssertTrue(message = "비밀번호가 일치하지 않습니다.")
 	private boolean isPassowrdCompare() {
