@@ -1,6 +1,7 @@
 package org.syaku.tutorials.spring.apps.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import org.syaku.tutorials.spring.boot.servlet.ValidationServlet;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -74,7 +76,7 @@ public class FormControllerTest {
 		form.setDate("20170430222222");
 		form.setEmail("ss");
 		form.setHobby(new String[]{ "1", "2", "3" });
-		form.setIdx("1");
+		form.setIdx("AS000000000000000001");
 		form.setName("good");
 		form.setPassword("1234");
 		form.setPassword2("1234");
@@ -105,9 +107,9 @@ public class FormControllerTest {
 		form.setEmail("ss");
 		form.setHobby(new String[]{ "1", "2", "3" });
 		form.setIdx("1");
-		form.setName("good");
-		form.setPassword("1234");
-		form.setPassword2("1234");
+		form.setName("가나다라마");
+		form.setPassword("가나다2321wdqeq");
+		form.setPassword2("1ewqewq1231");
 		form.setPhone("12341234");
 		form.setSex("S");
 		form.setUserId("ewqewqe");
@@ -124,5 +126,21 @@ public class FormControllerTest {
 		)
 				.andDo(print())
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void string_byte() throws Exception {
+		String text = "a가 나 다!@#$%^&*()_+213";
+		byte[] bytes = text.getBytes("utf-8");
+		for (int i = 0; i < bytes.length; i++) {
+			logger.debug("{}, {}", bytes[i], bytes[i] < 0);
+		}
+	}
+
+	@Test
+	public void regex() {
+		String text = "asdsa";
+		Pattern pattern = Pattern.compile("([a-z]+)");
+		System.out.println(pattern.matcher(text).matches());
 	}
 }

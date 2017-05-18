@@ -13,12 +13,10 @@ import java.util.Date;
  * @since 2017. 5. 15.
  */
 public class DateTimeValidator implements ConstraintValidator<DateTime, CharSequence> {
-	private String message;
 	private String format;
 
 	@Override
 	public void initialize(DateTime constraintAnnotation) {
-		this.message = constraintAnnotation.message();
 		this.format = constraintAnnotation.format();
 	}
 
@@ -32,9 +30,6 @@ public class DateTimeValidator implements ConstraintValidator<DateTime, CharSequ
 			SimpleDateFormat formatter = new SimpleDateFormat(this.format);
 			Date date = formatter.parse(value.toString());
 			String dateString = formatter.format(date);
-
-			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(message).addConstraintViolation();
 
 			return value.equals(dateString);
 		} catch (ParseException pe) {

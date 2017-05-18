@@ -1,7 +1,5 @@
 package org.syaku.tutorials.spring.validation.constraints;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -18,22 +16,29 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = UserIdValidator.class)
+@Constraint(validatedBy = GeneralPatternValidator.class)
 @Documented
-public @interface UserId {
-	/**
-	 * default {text.valid.UserId.ALPHABET_NUMBER_UNDERSCORE}
-	 * @return
-	 */
+public @interface GeneralPattern {
 	String message() default "";
 
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default {};
 
-	RegexType value() default RegexType.ALPHABET_NUMBER_UNDERSCORE;
+	Regex pattern();
 
-	enum RegexType {
-		ALPHABET_NUMBER_UNDERSCORE, ALPHABET_NUMBER, NUMBER, EMAIL
+	enum Regex {
+		UPPER_ALPHABET_NUMBER_UNDERSCORE,
+		UPPER_ALPHABET_NUMBER,
+		UPPER_ALPHABET,
+		ALPHABET_NUMBER_UNDERSCORE,
+		ALPHABET_NUMBER,
+		ALPHABET,
+		KOREAN_NUMBER,
+		KOREAN,
+		NUMBER,
+		USER_ID,
+		CRONTAB
+		//EMAIL
 	}
 }

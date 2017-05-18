@@ -10,11 +10,11 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.syaku.tutorials.spring.validation.constraints.Between;
 import org.syaku.tutorials.spring.validation.constraints.DateTime;
-import org.syaku.tutorials.spring.validation.constraints.UserId;
+import org.syaku.tutorials.spring.validation.constraints.SingleByte;
+import org.syaku.tutorials.spring.validation.constraints.GeneralPattern;
 import org.syaku.tutorials.spring.validation.group.Edit;
 
 import javax.validation.Valid;
-import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
@@ -34,26 +34,29 @@ public class Form {
 	private String idx;
 
 	@Length(max = 50)
-	@UserId
+	@GeneralPattern(pattern = GeneralPattern.Regex.ALPHABET)
 	private String userId;
 
 	@NotEmpty
+	@SingleByte
 	@Length(max = 50)
 	private String password;
 
 	@NotEmpty
+	@SingleByte
 	@Length(max = 50)
 	private String password2;
 
 	@NotEmpty
 	@Length(max = 50)
+	@GeneralPattern(pattern = GeneralPattern.Regex.KOREAN)
 	private String name;
 
 	@NotNull @Range(min = 1, max = 200)
 	private Integer age;
 
 	@NotEmpty
-	@Between({ "F", "M" })
+	@Between(valueSet = Between.ValueSet.YN)
 	private String sex;
 
 	@Past
@@ -72,7 +75,7 @@ public class Form {
 	@Size(min = 1, max = 2)
 	private String[] hobby;
 
-	@AssertTrue(message = "비밀번호가 일치하지 않습니다.")
+	//@AssertTrue(message = "비밀번호가 일치하지 않습니다.")
 	private boolean isPassowrdCompare() {
 		if (this.password == null || this.password2 == null) {
 			return false;

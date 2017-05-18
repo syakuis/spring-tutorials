@@ -1,7 +1,5 @@
 package org.syaku.tutorials.spring.validation.constraints;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;

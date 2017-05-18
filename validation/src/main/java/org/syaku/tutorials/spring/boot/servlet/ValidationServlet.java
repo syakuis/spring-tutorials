@@ -38,13 +38,7 @@ public class ValidationServlet extends WebMvcConfigurerAdapter implements WebMvc
 	@Autowired Validator validator;
 
 	/**
-	 <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-	 <property name="webBindingInitializer">
-	 <bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
-	 <property name="validator" ref="validator" />
-	 </bean>
-	 </property>
-	 </bean>
+	 <mvc:annotation-driven validator="validator"/>
 	 * @return
 	 */
 	@Override
