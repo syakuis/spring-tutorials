@@ -85,6 +85,6 @@ public class Form {
 	}
 
 	@Valid
-	@NotNull
+	@Size(min = 1, max = 2)
 	List<FormExt> formExts;
 }

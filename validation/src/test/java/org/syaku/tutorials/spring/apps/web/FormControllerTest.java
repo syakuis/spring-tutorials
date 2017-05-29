@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -19,11 +20,23 @@ import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 import org.springframework.web.context.WebApplicationContext;
 import org.syaku.tutorials.spring.apps.validation.model.Form;
+import org.syaku.tutorials.spring.apps.validation.model.FormExt;
+import org.syaku.tutorials.spring.apps.validation.support.AppValidationMessage;
 import org.syaku.tutorials.spring.boot.Bootstrap;
 import org.syaku.tutorials.spring.boot.servlet.ValidationServlet;
+import org.syaku.tutorials.spring.handlers.StatusCode;
+import org.syaku.tutorials.spring.handlers.SuccessHandler;
+import org.syaku.tutorials.spring.validation.ValidationException;
+import org.syaku.tutorials.spring.validation.ValidationResult;
+import org.syaku.tutorials.spring.validation.ValidationWrapper;
+import org.syaku.tutorials.spring.validation.group.Edit;
 
+import javax.validation.Valid;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -52,20 +65,58 @@ public class FormControllerTest {
 	@Autowired
 	private Validator validator;
 
+	@Autowired
+	private MessageSourceAccessor messageSource;
+
 	@Before
 	public void setUp() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 
+	class Foo {
+		@Valid
+		private Object object;
+
+		public Foo(Object object) {
+			this.object = object;
+		}
+
+		public Object getObject() {
+			return object;
+		}
+
+		public void setObject(Object object) {
+			this.object = object;
+		}
+	}
+
 	@Test
 	public void original() {
 		Form form = new Form();
-		DataBinder binder = new DataBinder(form);
+		List<FormExt> formExts = new ArrayList<>();
+		formExts.add(new FormExt("", "good"));
+		form.setFormExts(formExts);
+		List<Form> forms = new ArrayList<>();
+		forms.add(form);
+
+		ValidationWrapper wrapper = new ValidationWrapper(forms);
+
+		DataBinder binder = new DataBinder(wrapper);
 		binder.setValidator(validator);
 		binder.validate();
 		BindingResult result = binder.getBindingResult();
 
-		logger.debug("{}", result);
+		if (result.hasErrors()) {
+			SuccessHandler successHandler = new SuccessHandler(
+					"유효성 검사 오류...",
+					true, StatusCode.FormValidation,
+					new ValidationResult(
+							result,
+							new AppValidationMessage(messageSource)
+					).getFieldErrors());
+
+			logger.debug("{}", successHandler);
+		}
 	}
 
 	@Test
@@ -123,6 +174,74 @@ public class FormControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(form))
+		)
+				.andDo(print())
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void async_post_forms_edit_valid() throws Exception {
+		Form form = new Form();
+		form.setAge(20);
+		form.setBirthday(new Date());
+		form.setDate("20170430222222");
+		form.setEmail("ss");
+		form.setHobby(new String[]{ "1", "2", "3" });
+		form.setIdx("1");
+		form.setName("가나다라마");
+		form.setPassword("가나다2321wdqeq");
+		form.setPassword2("1ewqewq1231");
+		form.setPhone("12341234");
+		form.setSex("S");
+		form.setUserId("ewqewqe");
+
+		form.setFormExts(Collections.EMPTY_LIST);
+
+		List<Form> forms = new ArrayList<>();
+
+		forms.add(form);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+
+		mockMvc.perform(put("/validation/save/forms")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(forms))
+		)
+				.andDo(print())
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void async_post_forms2_edit_valid() throws Exception {
+		Form form = new Form();
+		form.setAge(20);
+		form.setBirthday(new Date());
+		form.setDate("20170430222222");
+		form.setEmail("ss");
+		form.setHobby(new String[]{ "1", "2", "3" });
+		form.setIdx("1");
+		form.setName("가나다라마");
+		form.setPassword("가나다2321wdqeq");
+		form.setPassword2("1ewqewq1231");
+		form.setPhone("12341234");
+		form.setSex("S");
+		form.setUserId("ewqewqe");
+
+		form.setFormExts(Collections.EMPTY_LIST);
+
+		List<Form> forms = new ArrayList<>();
+
+		forms.add(form);
+
+		ObjectMapper mapper = new ObjectMapper();
+
+
+		mockMvc.perform(put("/validation/save/forms/test")
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(forms))
 		)
 				.andDo(print())
 				.andExpect(status().isOk());

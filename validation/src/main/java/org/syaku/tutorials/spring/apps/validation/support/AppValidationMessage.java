@@ -9,7 +9,7 @@ import org.syaku.tutorials.spring.validation.ValidationMessage;
  * @site http://syaku.tistory.com
  * @since 2017. 5. 16.
  */
-public class AppValidationMessage implements ValidationMessage {
+	public class AppValidationMessage implements ValidationMessage {
 	private final MessageSourceAccessor messageSourceAccessor;
 
 	public AppValidationMessage(MessageSourceAccessor messageSourceAccessor) {

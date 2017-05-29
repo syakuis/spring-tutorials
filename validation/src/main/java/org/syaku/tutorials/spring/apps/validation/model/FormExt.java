@@ -1,5 +1,6 @@
 package org.syaku.tutorials.spring.apps.validation.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @ToString
 @Data
+@AllArgsConstructor
 public class FormExt {
 	@NotEmpty
 	@Length(max = 50)
